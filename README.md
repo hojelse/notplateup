@@ -1,2 +1,2 @@
-# Not PLateUp!
-This is NOT PlateUp!!!!!
+# Not PlateUp!
+This is NOT PlateUp!

@@ -1,0 +1,84 @@
+{
+	"root": {
+		"name": "_root",
+		"transform": {
+			"position": [0, 0, 0],
+			"rotation": [0, 0, 0],
+			"scale": [1, 1, 1]
+		},
+		"components": [],
+		"children": [
+			{
+				"name": "camera",
+				"transform": {
+					"position": [5, 15, 15],
+					"rotation": [-43, 0, 0],
+					"scale": [1, 1, 1]
+				},
+				"components": [
+					{
+						"typeId": "CAMERA",
+						"serializedData": {
+							"projectionType": 1,
+							"projectionParams": [45,0.1,1000]
+						}
+					}
+				],
+				"children": []
+			},
+			{
+				"name": "player",
+				"transform": {
+					"position": [1, 0, 1],
+					"rotation": [0, 0, 0],
+					"scale": [0.5, 1, 0.5]
+				},
+				"components": [
+					{
+						"typeId": "PLAYER",
+						"serializedData": {
+							"texture_id": 1
+						}
+					},
+					{
+						"typeId": "CONTROLLER",
+						"serializedData": {
+							"movSpeed": 5,
+							"rotSpeed": 2.5
+						}
+					},
+					{
+						"typeId": "PLAYER_RENDERER",
+						"serializedData": 16
+					}
+				],
+				"children": []
+			},
+			{
+				"name": "layout",
+				"transform": {
+					"position": [0, 0, 0],
+					"rotation": [0, 0, 0],
+					"scale": [1, 1, 1]
+				},
+				"components": [
+					{
+						"typeId": "LEVEL_LAYOUT",
+						"serializedData": {
+							"layout": [
+								[ 0,  2,  4,  6,  8, 10, 12, 14, 16,  0],
+								[52, -1, -1, -1, -1, -1, -1, -1, -1, 18],
+								[50, -1, -1, -1, -1, -1, -1, -1, -1, 20],
+								[48, -1, -1, -1, -1, -1, -1, -1, -1, 22],
+								[46, -1, -1, -1, -1, -1, -1, -1, -1, 24],
+								[44, -1, -1, -1, -1, -1, -1, -1, -1, 26],
+								[ 0, 42, 40, 38, 36, 34, 32, 30, 28,  0]
+							]
+						}
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

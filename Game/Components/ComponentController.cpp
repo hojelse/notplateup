@@ -29,10 +29,12 @@ void ComponentController::Update(float deltaTime) {
 	// if (key_down_i) delta_rot_vertical -= 1.0f;
 	// if (key_down_k) delta_rot_vertical += 1.0f;
 
-	GetGameObject()->transform = glm::translate(
+	auto go = GetGameObject().lock();
+	auto transform = go->transform;
+	transform = glm::translate(
 		glm::rotate(
 			glm::rotate(
-				GetGameObject()->transform,
+				transform,
 				delta_rot_horizontal * deltaTime * rot_speed,
 				glm::vec3(0, 1, 0)
 			),
@@ -81,7 +83,7 @@ void ComponentController::KeyEvent(SDL_Event& event)
 }
 
 void ComponentController::Render(sre::RenderPass&) {
-	auto gameObject = GetGameObject();
+	auto gameObject = GetGameObject().lock();
 	glm::vec3 position = gameObject->GetPosition();
 	glm::vec3 rotation = gameObject->GetEulerAngles();
 	glm::vec3 scale = gameObject->GetScale();

@@ -27,7 +27,8 @@ void ComponentCamera::Init(rapidjson::Value& serializedData) {
 }
 
 void ComponentCamera::Update(float) {
-	auto transform = GetGameObject()->transform;
+	auto go = GetGameObject().lock();
+	auto transform = go->transform;
 	glm::vec3 position, scale;
 	glm::quat rotation;
 

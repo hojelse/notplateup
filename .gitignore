@@ -1,0 +1,11 @@
+
+CMakeFiles/
+Debug/
+Release/
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+
+*.a
+*.ini
+NotPlateUp

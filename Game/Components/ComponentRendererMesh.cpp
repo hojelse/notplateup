@@ -60,10 +60,11 @@ void ComponentRendererMesh::Update(float deltaTime)
 
 void ComponentRendererMesh::Render(sre::RenderPass &renderPass)
 {
+	auto go = GetGameObject().lock();
 	renderPass.draw(
 		_mesh,
 		glm::rotate(
-			GetGameObject()->transform,
+			go->transform,
 			glm::pi<float>() * 3 / 2,
 			glm::vec3(1, 0, 0)),
 		_material
@@ -74,7 +75,7 @@ void ComponentRendererMesh::Render(sre::RenderPass &renderPass)
 		renderPass.draw(
 			_mesh,
 			glm::rotate(
-				GetGameObject()->transform,
+				go->transform,
 				glm::pi<float>() * i / 2,
 				glm::vec3(0, 1, 0)),
 			_material

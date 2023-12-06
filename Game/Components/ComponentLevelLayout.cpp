@@ -18,7 +18,7 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 			if (texture_id < 0) continue;
 			if (texture_id > 6*16-1) continue;
 
-			auto go = engine->CreateGameObject("boxes");
+			auto go = engine->CreateGameObject("boxes" + std::to_string(x) + std::to_string(y));
 			auto r = std::make_shared<ComponentRendererMesh>();
 			r->Init(serializedData["layout"][y][x]);
 			go.lock()->AddComponent(r);

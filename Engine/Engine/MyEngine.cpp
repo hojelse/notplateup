@@ -43,6 +43,7 @@ namespace MyEngine {
 		// initialize b2
 		_b2World = new b2World(b2Vec2(0, -9.8));
 		_b2World->SetContactListener(this);
+		_b2World->SetGravity(b2Vec2(0, 0));
 
 		// load scene file
 		std::ifstream fis(sceneFile);

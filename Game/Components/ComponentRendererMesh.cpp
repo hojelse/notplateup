@@ -69,6 +69,14 @@ void ComponentRendererMesh::Render(sre::RenderPass &renderPass)
 			glm::vec3(1, 0, 0)),
 		_material
 	);
+	renderPass.draw(
+		_mesh,
+		glm::rotate(
+			go->transform,
+			glm::pi<float>() * 1 / 2,
+			glm::vec3(1, 0, 0)),
+		_material
+	);
 
 	for (int i = 0; i < 4; i++)
 	{

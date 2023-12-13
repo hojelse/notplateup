@@ -8,6 +8,10 @@ ComponentPhysicsBody::~ComponentPhysicsBody() {
 		delete _shape;
 		_shape = nullptr;
 	}
+	if (_shape_circle != nullptr) {
+		delete _shape_circle;
+		_shape_circle = nullptr;
+	}
 
 	if (_body != nullptr && _fixture != nullptr) {
 		_body->DestroyFixture(_fixture);
@@ -27,12 +31,14 @@ void ComponentPhysicsBody::Init(rapidjson::Value& serializedData) {
 	int bodyType = serializedData["bodyType"].GetInt();
 	bool isSensor = serializedData["isSensor"].GetBool();
 	glm::vec2 size = DeserializeVector2(serializedData["size"]);
+	// _is_circle = serializedData["is_circle"].GetBool();
 
 	CreateBody(static_cast<b2BodyType>(bodyType), isSensor, size);
 }
 
 void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::vec2 size) {
-	glm::vec2 pos = GetGameObject().lock()->GetPosition();
+	auto go = GetGameObject().lock();
+	glm::vec2 pos = go->GetPosition();
 	auto engine = MyEngine::Engine::GetInstance();
 	float physicsScale = engine->GetPhysicsScale();
 
@@ -42,7 +48,10 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 	// shape
 	{
 		_shape = new b2PolygonShape();
-		_shape->SetAsBox(size.x / physicsScale, size.y / physicsScale);
+		_shape->SetAsBox((size.x/2) / physicsScale, (size.y/2) / physicsScale);
+
+		_shape_circle = new b2CircleShape();
+		_shape_circle->m_radius = (size.x/2) / physicsScale;
 	}
 
 	// body
@@ -62,7 +71,15 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 	// fixture
 	{
 		b2FixtureDef fixtureDef;
-		fixtureDef.shape = _shape;
+
+		
+		if (go->GetName() == "player") {
+			std::cout << "player!" << std::endl;
+			fixtureDef.shape = _shape_circle;
+		} else {
+			std::cout << "box!" << std::endl;
+			fixtureDef.shape = _shape;
+		}
 		fixtureDef.isSensor = isSensor;
 
 		_fixture = _body->CreateFixture(&fixtureDef);

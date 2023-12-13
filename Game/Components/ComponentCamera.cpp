@@ -28,14 +28,13 @@ void ComponentCamera::Init(rapidjson::Value& serializedData) {
 
 void ComponentCamera::Update(float) {
 	auto go = GetGameObject().lock();
-	auto transform = go->transform;
 	glm::vec3 position, scale;
 	glm::quat rotation;
 
 	// we don't really care about these for gameObjects, but we need to matck glm::decompose() signature
 	glm::vec3 skew; glm::vec4 perspective;
 
-	glm::decompose(transform, scale, rotation, position, skew, perspective);
+	glm::decompose(go->transform, scale, rotation, position, skew, perspective);
 
 	_camera->setPositionAndRotation(position, glm::degrees(glm::eulerAngles(rotation)));
 }

@@ -28,7 +28,7 @@ namespace MyEngine {
 		const float PHYSICS_FIXED_FRAME_TIME = 1 / 60.0f;
 		const int   PHYSICS_ITERATION_POSITION = 2;
 		const int   PHYSICS_ITERATION_VELOCITY = 6;
-		const float PHYSICS_SCALE = 100;
+		const float PHYSICS_SCALE = 25; // originally 100, setting lower value is a nasty hack
 
 		Engine();
 
@@ -60,10 +60,10 @@ namespace MyEngine {
 
 		void DestroyGameObject(GameObject* gameObject);
 
+		std::map<std::string, std::shared_ptr<GameObject>> _gameObjects;
 	private:
 		// scene graph
 		std::weak_ptr<GameObject> _root;
-		std::map<std::string, std::shared_ptr<GameObject>> _gameObjects;
 		std::list<GameObject*> _toBeDestroyed;
 
 		// profiling and timing

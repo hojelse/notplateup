@@ -29,6 +29,8 @@ private:
 	b2Body* _body = nullptr;
 	b2Fixture* _fixture = nullptr;
 	b2PolygonShape* _shape = nullptr;
+	b2CircleShape* _shape_circle = nullptr;
+	bool _is_circle = false;
 
 	// TODO move to deserialization library (as DeserializeVector2)
 	static glm::vec2 DeserializeVector2(rapidjson::Value& vectorData);

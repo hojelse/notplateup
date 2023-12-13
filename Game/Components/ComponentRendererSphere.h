@@ -12,4 +12,6 @@ private:
 	std::shared_ptr<sre::Mesh> _mesh;
 	std::shared_ptr<sre::Material> _material;
 	std::shared_ptr<sre::Texture> _texture;
+	glm::vec3 prev_pos;
+	float _angle;
 };

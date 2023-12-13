@@ -8,8 +8,6 @@
 
 void ComponentRendererSphere::Init(rapidjson::Value &serializedData)
 {
-	// GetGameObject()->SetScale(GetGameObject()->GetScale() * glm::vec3(0.5f, 1.0f, 0.5f));
-
 	_mesh = sre::Mesh::create()
 				.withSphere()
 				.build();
@@ -23,11 +21,28 @@ void ComponentRendererSphere::Init(rapidjson::Value &serializedData)
 		.build();
 
 	_material->setTexture(_texture);
+
+	auto go = GetGameObject().lock();
+	prev_pos = go->GetPosition();
 }
 
 void ComponentRendererSphere::Update(float deltaTime)
 {
+	auto go = GetGameObject().lock();
+	auto curr_pos = go->GetPosition();
 
+	// movement vector
+	auto dir_vec = glm::normalize(curr_pos - prev_pos);
+	// printf("dir_vec: %f, %f, %f\n", dir_vec.x, dir_vec.y, dir_vec.z);
+
+	// rotation angle
+	auto sign = dir_vec.x >= 0 ? -1 : 1;
+	auto angle = acos(glm::dot(dir_vec, glm::vec3(0, 0, -1))) * sign;
+
+	// handle nan
+	_angle = std::isnan(angle) ? 0 : angle;
+
+	prev_pos = curr_pos;
 }
 
 void ComponentRendererSphere::Render(sre::RenderPass &renderPass)
@@ -37,8 +52,8 @@ void ComponentRendererSphere::Render(sre::RenderPass &renderPass)
 		_mesh,
 		glm::rotate(
 			go->transform,
-			glm::pi<float>() * 0 / 2,
-			glm::vec3(1, 0, 0)),
+			_angle,
+			glm::vec3(0, 1, 0)),
 		_material
 	);
 }

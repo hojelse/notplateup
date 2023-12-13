@@ -1,5 +1,6 @@
 #include "ComponentLevelLayout.h"
 #include "ComponentRendererMesh.h"
+#include "Engine/Components/ComponentPhysicsBody.h"
 #include "Engine/MyEngine.h"
 
 #include <glm/glm.hpp>
@@ -18,19 +19,27 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 			if (texture_id < 0) continue;
 			if (texture_id > 6*16-1) continue;
 
-			auto go = engine->CreateGameObject("boxes" + std::to_string(x) + std::to_string(y));
+			auto go = engine->CreateGameObject("box-" + std::to_string(x) + "-" + std::to_string(y)).lock();
+
 			auto r = std::make_shared<ComponentRendererMesh>();
 			r->Init(serializedData["layout"][y][x]);
-			go.lock()->AddComponent(r);
+			go->AddComponent(r);
 
-			auto pos = glm::vec3(x, 0, y);
+			auto pos = glm::vec3(x, dimy-y, 0);
 			auto rot = glm::vec3(0, 0, 0);
 			auto scl = glm::vec3(1, 1, 1);
 
-			go.lock()->transform =
+			go->transform =
 				glm::translate(pos) *
 				glm::mat4_cast(glm::quat(glm::radians(rot))) * 
 				glm::scale(scl);
+
+			auto body = go->CreateComponent<ComponentPhysicsBody>().lock();
+
+			auto bodyType = b2_staticBody;
+			auto isSensor = false;
+			glm::vec2 size { 0.5, 0.5 };
+			body->CreateBody(bodyType, isSensor, size);
 		}
 	}
 }

@@ -10,7 +10,7 @@
 #include "Engine/MyEngine.h"
 
 void ComponentPlayer::Init(rapidjson::Value& serializedData) {
-	std::cout << "Player init" << std::endl;
+
 }
 
 void ComponentPlayer::Update(float deltaTime) {

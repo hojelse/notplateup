@@ -74,10 +74,8 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 
 		
 		if (go->GetName() == "player") {
-			std::cout << "player!" << std::endl;
 			fixtureDef.shape = _shape_circle;
 		} else {
-			std::cout << "box!" << std::endl;
 			fixtureDef.shape = _shape;
 		}
 		fixtureDef.isSensor = isSensor;

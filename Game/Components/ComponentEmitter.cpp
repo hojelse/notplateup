@@ -6,13 +6,11 @@
 #include "ComponentItem.h"
 
 void ComponentEmitter::Interact() {
-	auto heldVal = "itm-held";
 	auto engine = MyEngine::Engine::GetInstance();
-	auto isHeld = engine->GameObjectExists(heldVal);
+	auto is_held = engine->GameObjectExists("itm-held");
 
-	if (!isHeld) {
-		auto item = engine->CreateGameObject(heldVal).lock();
-		std::cout << "not held" << std::endl;
+	if (!is_held) {
+		auto item = engine->CreateGameObject("itm-held").lock();
 		auto r = std::make_shared<ComponentRendererMesh>();
 		r->Init(_id);
 		item->AddComponent(r);
@@ -23,7 +21,7 @@ void ComponentEmitter::Interact() {
 
 		auto pos = glm::vec3(0, 0, 4);
 		auto rot = glm::vec3(0, 0, 0);
-		auto scl = glm::vec3(1, 1, 1);
+		auto scl = glm::vec3(0.5, 0.5, 0.5);
 
 		item->transform =
 				glm::translate(pos) *

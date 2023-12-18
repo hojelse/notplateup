@@ -121,38 +121,20 @@ void ComponentController::Interact() {
 	int x = std::floor(pos.x + direction_vector.x + 0.5f);
 	int y = std::floor(pos.y + direction_vector.y + 0.5f);
 
-	auto name = "box-" + std::to_string(x) + "-" + std::to_string(y);
 
 	auto engine = MyEngine::Engine::GetInstance();
-	auto box = engine->GetGameObject(name).lock();
-	auto held = engine->GetGameObject("box-held").lock();
-	auto interactable = box->FindComponent<ComponentInteractable>().lock();
-	if (interactable) {
-		std::cout << "interactable!!" << std::endl;
-		interactable->Interact();
+
+	auto box_id = "box-" + std::to_string(x) + "-" + std::to_string(y);
+
+	if (engine->GameObjectExists(box_id)) {
+		auto box = engine->GetGameObject(box_id).lock();
+
+		auto interactable = box->FindComponent<ComponentInteractable>().lock();
+		if (interactable) {
+			interactable->Interact();
+		}
 	}
-//	if (box && !held) {
-//		std::cout << "pick up!" << std::endl;
-//		box->SetPosition(
-//			glm::vec3(-2, -2, 0)
-//		);
-//		box->SetName("box-held");
-//		engine->_gameObjects.erase(name);
-//		engine->_gameObjects["box-held"] = box;
-//
-//		action_timeout = 0.2f;
-//	} else if (!box && held) {
-//		std::cout << "place!" << std::endl;
-//		held->SetPosition(
-//			glm::vec3(x, y, 0)
-//		);
-//		held->SetName(name);
-//		engine->_gameObjects.erase("box-held");
-//		engine->_gameObjects[name] = held;
-//		action_timeout = 0.2f;
-//	} else {
-//        std::cout << "idk bruv " << (box != nullptr) << " " << (held != nullptr) << std::endl;
-//    }
+
 }
 
 float ComponentController::GetAngle() {

@@ -16,7 +16,7 @@ private:
 	void Interact();
 	float mov_speed;
 	float rot_speed;
-    glm::vec3 direction_vector;
+    glm::vec3 direction_vector = {0,0,0};
     float direction_angle;
 	std::weak_ptr<ComponentPhysicsBody> _body;
 

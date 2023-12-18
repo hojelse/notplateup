@@ -37,17 +37,17 @@ void ComponentController::Update(float deltaTime) {
 
 	auto go = _body.lock();
     auto vec = glm::vec3(
-            delta_x * deltaTime * mov_speed,
-            delta_y * deltaTime * mov_speed,
-            delta_z * deltaTime * mov_speed
+            delta_x,
+            delta_y,
+            delta_z
     );
-    direction_vector = vec;
-    auto dir_vec = glm::normalize(direction_vector);
-    float sign = dir_vec.x >= 0 ? -1.0 : 1.0;
-    auto newAngle = acos(glm::dot(dir_vec, glm::vec3(0, -1, 0))) * sign;
+    auto normalized = glm::normalize(vec);
+    if (!isnan(normalized.x)) direction_vector = normalized;
+    float sign = direction_vector.x >= 0 ? -1.0 : 1.0;
+    auto newAngle = acos(glm::dot(direction_vector, glm::vec3(0, -1, 0))) * sign;
     if (!std::isnan(newAngle)) direction_angle = newAngle;
 	go->setLinearVelocity(
-		vec
+		vec * deltaTime * mov_speed
 	);
 
 	// go->transform = glm::translate(
@@ -119,8 +119,8 @@ void ComponentController::Interact() {
     auto rotation = go->GetRotation();
     glm::vec3 euler = glm::eulerAngles(rotation);
 
-	int x = std::floor(pos.x + 0.5f);
-	int y = std::floor(pos.y + 0.5f);
+	int x = std::floor(pos.x + direction_vector.x + 0.5f);
+	int y = std::floor(pos.y + direction_vector.y + 0.5f);
 
 	auto name = "box-" + std::to_string(x) + "-" + std::to_string(y);
 

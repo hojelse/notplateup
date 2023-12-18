@@ -12,6 +12,7 @@ void ComponentRendererMesh::Init(rapidjson::Value &serializedData) {
 }
 
 void ComponentRendererMesh::Init(int texture_id) {
+	_id = texture_id;
 	const glm::vec2 textureSize_px = glm::vec2(1039, 389);
 	const glm::vec2 tileSize_px = glm::vec2(64, 64);
 	const glm::vec2 borderSizeBetween_px = glm::vec2(1, 1);

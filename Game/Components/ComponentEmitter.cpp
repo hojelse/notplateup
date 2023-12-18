@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include "glm/gtx/transform.hpp"
+#include "ComponentItem.h"
 
 void ComponentEmitter::Interact() {
 	auto heldVal = "itm-held";
@@ -15,6 +16,11 @@ void ComponentEmitter::Interact() {
 		auto r = std::make_shared<ComponentRendererMesh>();
 		r->Init(_id);
 		item->AddComponent(r);
+
+		auto item_component = std::make_shared<ComponentItem>();
+		item_component->Init(_id);
+		item->AddComponent(item_component);
+
 		auto pos = glm::vec3(0, 0, 4);
 		auto rot = glm::vec3(0, 0, 0);
 		auto scl = glm::vec3(1, 1, 1);

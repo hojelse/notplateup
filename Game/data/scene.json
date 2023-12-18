@@ -11,8 +11,8 @@
 			{
 				"name": "camera",
 				"transform": {
-					"position": [2.5, 3.5, 17],
-					"rotation": [0, 0, 0],
+					"position": [2.5, -4.5, 13],
+					"rotation": [35, 0, 0],
 					"scale": [1, 1, 1]
 				},
 				"components": [
@@ -68,7 +68,7 @@
 						"typeId": "LEVEL_LAYOUT",
 						"serializedData": {
 							"layout": [
-								[ 0,  0,  0,  0,  0,  0,  0],
+								[ 0,  6,  7,  0,  8,  9,  0],
 								[ 0, -1, -1, -1, -1, -1,  0],
 								[ 0, -1, -1, -1, -1, -1,  0],
 								[ 0, -1, -1, -1, -1, -1,  0],

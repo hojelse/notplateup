@@ -7,6 +7,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include "glm/gtx/transform.hpp"
 #include "ComponentEmitter.h"
+#include "ComponentConsumer.h"
 
 void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	auto dimy = serializedData["layout"].Size();
@@ -31,11 +32,15 @@ void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
     r->Init(texture_id);
     go->AddComponent(r);
 
-    if (texture_id == 5) {
+    if (texture_id == 6 || texture_id == 8) {
         auto emitter = std::make_shared<ComponentEmitter>();
         emitter->Init(texture_id);
         go->AddComponent(emitter);
-    }
+    } else if (texture_id == 7 || texture_id == 9) { // 6 consumed by 7, 8 consumed by 9
+		auto consumer = std::make_shared<ComponentConsumer>();
+		consumer->Init(texture_id);
+		go->AddComponent(consumer);
+	}
 
     auto pos = glm::vec3(x, y, 0);
     auto rot = glm::vec3(0, 0, 0);

@@ -57,6 +57,7 @@ namespace MyEngine {
 		std::weak_ptr<GameObject> CreateGameObject(std::string name);
 		std::weak_ptr<GameObject> CreateGameObject(std::string name, std::weak_ptr<GameObject> parent);
 		std::weak_ptr<GameObject> GetGameObject(std::string name) { return _gameObjects[name]; }
+		void DeleteGameObject(std::string name) { _gameObjects.erase(name); }
         bool GameObjectExists(std::string name) { return _gameObjects.find(name) != _gameObjects.end(); }
 		void DestroyGameObject(GameObject* gameObject);
 

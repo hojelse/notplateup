@@ -1,5 +1,6 @@
 #include "ComponentEmitter.h"
 #include "ComponentRendererMesh.h"
+#include "ComponentFollowTarget.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include "glm/gtx/transform.hpp"
@@ -11,6 +12,7 @@ void ComponentEmitter::Interact() {
 
 	if (!is_held) {
 		auto item = engine->CreateGameObject("itm-held").lock();
+
 		auto r = std::make_shared<ComponentRendererMesh>();
 		r->Init(_id);
 		item->AddComponent(r);
@@ -19,7 +21,14 @@ void ComponentEmitter::Interact() {
 		item_component->Init(_id);
 		item->AddComponent(item_component);
 
-		auto pos = glm::vec3(0, 0, 4);
+		auto f = std::make_shared<ComponentFollowTarget>();
+		f->Init(
+			"player",
+			glm::vec3{0, 0, 2}
+		);
+		item->AddComponent(f);
+
+		auto pos = glm::vec3(0, 0, 0);
 		auto rot = glm::vec3(0, 0, 0);
 		auto scl = glm::vec3(0.5, 0.5, 0.5);
 

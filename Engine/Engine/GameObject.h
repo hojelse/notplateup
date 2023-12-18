@@ -32,6 +32,7 @@ namespace MyEngine {
 
 		void AddChild(std::shared_ptr<GameObject>);
 		void AddComponent(std::shared_ptr<Component>);
+		void RemoveComponent(std::shared_ptr<Component>);
 
 		template<class T>
 		std::weak_ptr<T> CreateComponent() {

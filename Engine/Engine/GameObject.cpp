@@ -84,6 +84,10 @@ namespace MyEngine {
 		_components.push_back(p_component);
 	}
 
+	void GameObject::RemoveComponent(std::shared_ptr<Component> p_component) {
+		_components.remove(p_component);
+	}
+
 	std::string GameObject::GetName() {
 		return _name;
 	}

@@ -36,13 +36,18 @@ void ComponentController::Update(float deltaTime) {
 	// if (key_down_k) delta_rot_vertical += 1.0f;
 
 	auto go = _body.lock();
-
+    auto vec = glm::vec3(
+            delta_x * deltaTime * mov_speed,
+            delta_y * deltaTime * mov_speed,
+            delta_z * deltaTime * mov_speed
+    );
+    direction_vector = vec;
+    auto dir_vec = glm::normalize(direction_vector);
+    float sign = dir_vec.x >= 0 ? -1.0 : 1.0;
+    auto newAngle = acos(glm::dot(dir_vec, glm::vec3(0, -1, 0))) * sign;
+    if (!std::isnan(newAngle)) direction_angle = newAngle;
 	go->setLinearVelocity(
-		glm::vec3(
-			delta_x * deltaTime * mov_speed,
-			delta_y * deltaTime * mov_speed,
-			delta_z * deltaTime * mov_speed
-		)
+		vec
 	);
 
 	// go->transform = glm::translate(
@@ -111,6 +116,8 @@ void ComponentController::KeyEvent(SDL_Event& event)
 void ComponentController::Interact() {
 	auto go = GetGameObject().lock();
 	auto pos = go->GetPosition();
+    auto rotation = go->GetRotation();
+    glm::vec3 euler = glm::eulerAngles(rotation);
 
 	int x = std::floor(pos.x + 0.5f);
 	int y = std::floor(pos.y + 0.5f);
@@ -140,7 +147,9 @@ void ComponentController::Interact() {
 		engine->_gameObjects.erase("box-held");
 		engine->_gameObjects[name] = held;
 		action_timeout = 0.2f;
-	}
+	} else {
+        std::cout << "idk bruv " << (box != nullptr) << " " << (held != nullptr) << std::endl;
+    }
 }
 
 void ComponentController::Render(sre::RenderPass&) {
@@ -159,4 +168,8 @@ void ComponentController::Render(sre::RenderPass&) {
 	if (ImGui::DragFloat3("Scale", &(scale.x)))
 		gameObject->SetScale(scale);
 	ImGui::End();
+}
+
+float ComponentController::GetAngle() {
+    return direction_angle;
 }

@@ -3,7 +3,7 @@
 #include <stdarg.h>
 
 namespace MyEngine {
-	static class Logger {
+	class Logger {
 	public:
 		static void Log(std::string message, ...) {
 			va_list args;

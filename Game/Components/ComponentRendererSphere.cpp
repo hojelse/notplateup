@@ -2,6 +2,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
+#include "ComponentController.h"
 #include <glm/gtx/matrix_decompose.hpp>
 #include <unistd.h>
 #include <cmath>
@@ -11,7 +12,6 @@ void ComponentRendererSphere::Init(rapidjson::Value &serializedData)
 	_mesh = sre::Mesh::create()
 				.withSphere()
 				.build();
-
 	_material = sre::Shader::getUnlit()->createMaterial();
 
 	_texture = sre::Texture::create()
@@ -21,39 +21,26 @@ void ComponentRendererSphere::Init(rapidjson::Value &serializedData)
 		.build();
 
 	_material->setTexture(_texture);
-
-	auto go = GetGameObject().lock();
-	prev_pos = go->GetPosition();
 }
 
 void ComponentRendererSphere::Update(float deltaTime)
 {
-	auto go = GetGameObject().lock();
-	auto curr_pos = go->GetPosition();
-
-	// movement vector
-	auto dir_vec = glm::normalize(curr_pos - prev_pos);
-	// printf("dir_vec: %f, %f, %f\n", dir_vec.x, dir_vec.y, dir_vec.z);
-
-	// rotation angle
-	auto sign = dir_vec.x >= 0 ? -1 : 1;
-	auto angle = acos(glm::dot(dir_vec, glm::vec3(0, 0, -1))) * sign;
-
-	// handle nan
-	_angle = std::isnan(angle) ? 0 : angle;
-
-	prev_pos = curr_pos;
 }
 
 void ComponentRendererSphere::Render(sre::RenderPass &renderPass)
 {
+    auto controller = GetGameObject().lock()->FindComponent<ComponentController>();
+    auto angle = controller.lock()->GetAngle();
 	auto go = GetGameObject().lock();
+    auto rotated = glm::rotate(
+            go->transform,
+            angle,
+            glm::vec3(0, 0, 1));
+    auto scaled = glm::scale(rotated, {0.5,0.5,1});
+    auto translated = glm::translate(scaled, {0,0,0.5});
 	renderPass.draw(
 		_mesh,
-		glm::rotate(
-			go->transform,
-			_angle,
-			glm::vec3(0, 1, 0)),
+		translated,
 		_material
 	);
 }

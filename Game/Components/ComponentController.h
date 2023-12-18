@@ -10,10 +10,15 @@ class ComponentController : public MyEngine::Component {
 	void KeyEvent(SDL_Event&) override;
 	void Render(sre::RenderPass&) override;
 
+public:
+    float GetAngle();
+
 private:
 	void Interact();
 	float mov_speed;
 	float rot_speed;
+    glm::vec3 direction_vector;
+    float direction_angle;
 	std::weak_ptr<ComponentPhysicsBody> _body;
 
 	bool key_down_w = false;

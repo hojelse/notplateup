@@ -25,7 +25,7 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 			r->Init(serializedData["layout"][y][x]);
 			go->AddComponent(r);
 
-			auto pos = glm::vec3(x, dimy-y, 0);
+			auto pos = glm::vec3(x, y, 0);
 			auto rot = glm::vec3(0, 0, 0);
 			auto scl = glm::vec3(1, 1, 1);
 

@@ -11,6 +11,7 @@ public:
 
 	void Init(rapidjson::Value& serializedData) override;
 	void Update(float) override;
+    void Render(sre::RenderPass&) override;
 private:
 	sre::Camera* _camera;
 };

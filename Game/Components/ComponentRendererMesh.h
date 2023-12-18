@@ -5,6 +5,7 @@
 class ComponentRendererMesh : public MyEngine::Component {
 public:
 	void Init(rapidjson::Value& serializedData) override;
+	void Init(int texture_id);
 	void Update(float deltaTime) override;
 	void Render(sre::RenderPass& renderPass) override;
 

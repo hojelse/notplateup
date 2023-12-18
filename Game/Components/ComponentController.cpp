@@ -6,9 +6,10 @@
 #include "Engine/MyEngine.h"
 
 #include "SDL.h"
+#include "ComponentEmitter.h"
 #include <cmath>
 
-void ComponentController::Init(rapidjson::Value& serializedData) {
+void ComponentController::Init(rapidjson::Value &serializedData) {
 	mov_speed = serializedData["movSpeed"].GetFloat();
 	rot_speed = serializedData["rotSpeed"].GetFloat();
 
@@ -36,18 +37,18 @@ void ComponentController::Update(float deltaTime) {
 	// if (key_down_k) delta_rot_vertical += 1.0f;
 
 	auto go = _body.lock();
-    auto vec = glm::vec3(
-            delta_x,
-            delta_y,
-            delta_z
-    );
-    auto normalized = glm::normalize(vec);
-    if (!isnan(normalized.x)) direction_vector = normalized;
-    float sign = direction_vector.x >= 0 ? -1.0 : 1.0;
-    auto newAngle = acos(glm::dot(direction_vector, glm::vec3(0, -1, 0))) * sign;
-    if (!std::isnan(newAngle)) direction_angle = newAngle;
+	auto vec = glm::vec3(
+			delta_x,
+			delta_y,
+			delta_z
+	);
+	auto normalized = glm::normalize(vec);
+	if (!isnan(normalized.x)) direction_vector = normalized;
+	float sign = direction_vector.x >= 0 ? -1.0 : 1.0;
+	auto newAngle = acos(glm::dot(direction_vector, glm::vec3(0, -1, 0))) * sign;
+	if (!std::isnan(newAngle)) direction_angle = newAngle;
 	go->setLinearVelocity(
-		vec * deltaTime * mov_speed
+			vec * deltaTime * mov_speed
 	);
 
 	// go->transform = glm::translate(
@@ -69,10 +70,8 @@ void ComponentController::Update(float deltaTime) {
 
 }
 
-void ComponentController::KeyEvent(SDL_Event& event)
-{
-	switch (event.key.keysym.sym)
-	{
+void ComponentController::KeyEvent(SDL_Event &event) {
+	switch (event.key.keysym.sym) {
 		case SDLK_w:
 			key_down_w = event.type == SDL_KEYDOWN;
 			break;
@@ -116,8 +115,8 @@ void ComponentController::KeyEvent(SDL_Event& event)
 void ComponentController::Interact() {
 	auto go = GetGameObject().lock();
 	auto pos = go->GetPosition();
-    auto rotation = go->GetRotation();
-    glm::vec3 euler = glm::eulerAngles(rotation);
+	auto rotation = go->GetRotation();
+	glm::vec3 euler = glm::eulerAngles(rotation);
 
 	int x = std::floor(pos.x + direction_vector.x + 0.5f);
 	int y = std::floor(pos.y + direction_vector.y + 0.5f);
@@ -127,31 +126,35 @@ void ComponentController::Interact() {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto box = engine->GetGameObject(name).lock();
 	auto held = engine->GetGameObject("box-held").lock();
-
-	if (box && !held) {
-		std::cout << "pick up!" << std::endl;
-		box->SetPosition(
-			glm::vec3(-2, -2, 0)
-		);
-		box->SetName("box-held");
-		engine->_gameObjects.erase(name);
-		engine->_gameObjects["box-held"] = box;
-
-		action_timeout = 0.2f;
-	} else if (!box && held) {
-		std::cout << "place!" << std::endl;
-		held->SetPosition(
-			glm::vec3(x, y, 0)
-		);
-		held->SetName(name);
-		engine->_gameObjects.erase("box-held");
-		engine->_gameObjects[name] = held;
-		action_timeout = 0.2f;
-	} else {
-        std::cout << "idk bruv " << (box != nullptr) << " " << (held != nullptr) << std::endl;
-    }
+	auto emitter = box->FindComponent<ComponentEmitter>().lock();
+	if (emitter) {
+		std::cout << "emitter!!" << std::endl;
+		emitter->Interact();
+	}
+//	if (box && !held) {
+//		std::cout << "pick up!" << std::endl;
+//		box->SetPosition(
+//			glm::vec3(-2, -2, 0)
+//		);
+//		box->SetName("box-held");
+//		engine->_gameObjects.erase(name);
+//		engine->_gameObjects["box-held"] = box;
+//
+//		action_timeout = 0.2f;
+//	} else if (!box && held) {
+//		std::cout << "place!" << std::endl;
+//		held->SetPosition(
+//			glm::vec3(x, y, 0)
+//		);
+//		held->SetName(name);
+//		engine->_gameObjects.erase("box-held");
+//		engine->_gameObjects[name] = held;
+//		action_timeout = 0.2f;
+//	} else {
+//        std::cout << "idk bruv " << (box != nullptr) << " " << (held != nullptr) << std::endl;
+//    }
 }
 
 float ComponentController::GetAngle() {
-    return direction_angle;
+	return direction_angle;
 }

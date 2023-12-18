@@ -6,7 +6,7 @@
 #include "Engine/MyEngine.h"
 
 #include "SDL.h"
-#include "ComponentEmitter.h"
+#include "ComponentInteractable.h"
 #include <cmath>
 
 void ComponentController::Init(rapidjson::Value &serializedData) {
@@ -126,10 +126,10 @@ void ComponentController::Interact() {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto box = engine->GetGameObject(name).lock();
 	auto held = engine->GetGameObject("box-held").lock();
-	auto emitter = box->FindComponent<ComponentEmitter>().lock();
-	if (emitter) {
-		std::cout << "emitter!!" << std::endl;
-		emitter->Interact();
+	auto interactable = box->FindComponent<ComponentInteractable>().lock();
+	if (interactable) {
+		std::cout << "interactable!!" << std::endl;
+		interactable->Interact();
 	}
 //	if (box && !held) {
 //		std::cout << "pick up!" << std::endl;

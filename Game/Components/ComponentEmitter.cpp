@@ -4,10 +4,6 @@
 #include <glm/gtc/quaternion.hpp>
 #include "glm/gtx/transform.hpp"
 
-void ComponentEmitter::Init(int id) {
-	_id = id;
-}
-
 void ComponentEmitter::Interact() {
 	auto heldVal = "itm-held";
 	auto engine = MyEngine::Engine::GetInstance();

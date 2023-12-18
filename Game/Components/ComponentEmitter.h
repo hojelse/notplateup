@@ -1,12 +1,6 @@
-#include "Engine/Component.h"
-#include "Engine/MyEngine.h"
+#include "ComponentInteractable.h"
 
-class ComponentEmitter : public MyEngine::Component {
-public:
-	void Init(int id);
 
-	void Interact();
-
-private:
-	int _id;
+class ComponentEmitter : public ComponentInteractable {
+	void Interact() override;
 };

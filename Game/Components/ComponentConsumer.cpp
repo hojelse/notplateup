@@ -24,3 +24,4 @@ void ComponentConsumer::Interact() {
 			std::cout << "consumer and item are different types" << std::endl;
 		}
 	}
+}

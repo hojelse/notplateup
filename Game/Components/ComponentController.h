@@ -13,6 +13,7 @@ public:
     float GetAngle();
 
 private:
+	void MoveTable();
 	void Interact();
 	float mov_speed;
 	float rot_speed;

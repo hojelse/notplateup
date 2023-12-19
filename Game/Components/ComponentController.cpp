@@ -7,6 +7,7 @@
 
 #include "SDL.h"
 #include "ComponentInteractable.h"
+#include "ComponentFollowTarget.h"
 #include <cmath>
 
 void ComponentController::Init(rapidjson::Value &serializedData) {
@@ -108,7 +109,69 @@ void ComponentController::KeyEvent(SDL_Event &event) {
 			break;
 		case SDLK_p:
 			key_down_p = event.type == SDL_KEYDOWN;
+			if (key_down_p) MoveTable();
 			break;
+	}
+}
+
+void ComponentController::MoveTable() {
+	auto go = GetGameObject().lock();
+	auto pos = go->GetPosition();
+	auto rotation = go->GetRotation();
+	glm::vec3 euler = glm::eulerAngles(rotation);
+
+	int x = std::floor(pos.x + direction_vector.x + 0.5f);
+	int y = std::floor(pos.y + direction_vector.y + 0.5f);
+
+	auto box_id = "box-" + std::to_string(x) + "-" + std::to_string(y);
+
+	auto engine = MyEngine::Engine::GetInstance();
+	auto box_exists = engine->GameObjectExists(box_id);
+	auto box_held = engine->GameObjectExists("box-held");
+
+	if (box_exists && !box_held) {
+		std::cout << "pickup box!" << std::endl;
+		auto box = engine->GetGameObject(box_id).lock();
+		box->SetPosition({-1, -1, 0});
+		box->SetName("box-held");
+		engine->_gameObjects.erase(box_id);
+		engine->_gameObjects["box-held"] = box;
+
+		// Make box follow player
+		auto f = std::make_shared<ComponentFollowTarget>();
+		f->Init(
+			"player",
+			glm::vec3{0, 0, 2}
+		);
+		box->AddComponent(f);
+
+		// remove collider
+		auto body = box->FindComponent<ComponentPhysicsBody>().lock();
+		box->RemoveComponent(body);
+
+	} else if (!box_exists && box_held) {
+		std::cout << "place box!" << std::endl;
+		auto box = engine->GetGameObject("box-held").lock();
+		box->SetPosition(
+			glm::vec3(x, y, 0)
+		);
+		box->SetName(box_id);
+		engine->_gameObjects.erase("box-held");
+		engine->_gameObjects[box_id] = box;
+
+		// Make box NOT follow player
+		auto f = box->FindComponent<ComponentFollowTarget>().lock();
+		box->RemoveComponent(f);
+
+		// add collider
+		auto body = box->CreateComponent<ComponentPhysicsBody>().lock();
+		auto bodyType = b2_staticBody;
+		auto isSensor = false;
+		glm::vec2 size { 0.5, 0.5 };
+		body->CreateBody(bodyType, isSensor, size);
+		box->AddComponent(body);
+	} else {
+		std::cout << "idk bruv " << std::endl;
 	}
 }
 
@@ -120,7 +183,6 @@ void ComponentController::Interact() {
 
 	int x = std::floor(pos.x + direction_vector.x + 0.5f);
 	int y = std::floor(pos.y + direction_vector.y + 0.5f);
-
 
 	auto engine = MyEngine::Engine::GetInstance();
 

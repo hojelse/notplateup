@@ -120,3 +120,8 @@ void ComponentPhysicsBody::setLinearVelocity(glm::vec2 velocity) {
 	}
 	_body->SetLinearVelocity(v);
 }
+
+void ComponentPhysicsBody::setPosition(glm::vec2 pos) {
+	b2Vec2 v{ pos.x, pos.y };
+	_body->SetTransform(v, _body->GetAngle());
+}

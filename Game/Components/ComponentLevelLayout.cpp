@@ -67,7 +67,6 @@ void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 			glm::scale(scl);
 
 	auto body = go->CreateComponent<ComponentPhysicsBody>().lock();
-
 	auto bodyType = b2_staticBody;
 	auto isSensor = false;
 	glm::vec2 size { 0.5, 0.5 };

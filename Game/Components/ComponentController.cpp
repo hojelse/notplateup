@@ -52,6 +52,16 @@ void ComponentController::Update(float deltaTime) {
 			vec * deltaTime * mov_speed
 	);
 
+	if (dash_cooldown > 0) dash_cooldown -= deltaTime;
+	if (key_down_k && dash_cooldown <= 0) {
+		dash_timer = 0.2;
+		dash_cooldown = 1;
+	}
+	if (dash_timer >= 0) {
+		go->addImpulse(direction_vector * deltaTime * 30.0f);
+		dash_timer -= deltaTime;
+	}
+
 	// go->transform = glm::translate(
 	// 	glm::rotate(
 	// 		glm::rotate(

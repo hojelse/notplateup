@@ -34,6 +34,8 @@ private:
 	bool key_down_l = false;
 	bool key_down_o = false;
 	bool key_down_p = false;
+	float dash_cooldown = 0;
+	float dash_timer = 0;
 
 	float action_timeout = 0.0f;
 };

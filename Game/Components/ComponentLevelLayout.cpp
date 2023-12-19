@@ -19,6 +19,7 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	for (int y = 0; y < dimy; y++) {
 		for (int x = 0; x < dimx; x++) {
 			auto texture_id = serializedData["layout"][y][x].GetInt();
+
 			if (texture_id < 0) continue;
 			if (texture_id > 6*16-1) continue;
 			CreateBox(texture_id, x, y);

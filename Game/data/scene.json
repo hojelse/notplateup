@@ -11,7 +11,7 @@
 			{
 				"name": "camera",
 				"transform": {
-					"position": [2.5, -4.5, 13],
+					"position": [2.5, -10.5, 20],
 					"rotation": [35, 0, 0],
 					"scale": [1, 1, 1]
 				},
@@ -20,7 +20,7 @@
 						"typeId": "CAMERA",
 						"serializedData": {
 							"projectionType": 1,
-							"projectionParams": [45, 0.1, 1000]
+							"projectionParams": [25, 0.1, 1000]
 						}
 					}
 				],

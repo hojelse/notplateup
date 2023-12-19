@@ -35,12 +35,6 @@ void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 
 	switch (texture_id)
 	{
-		case 0: {
-			auto table = std::make_shared<ComponentTable>();
-				table->Init(texture_id);
-				go->AddComponent(table);
-			break;
-		}
 		case 6:
 		case 8: {
 				auto emitter = std::make_shared<ComponentEmitter>();
@@ -55,8 +49,12 @@ void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 			go->AddComponent(consumer);
 			break;
 		}
-		default:
+		default: {
+			auto table = std::make_shared<ComponentTable>();
+				table->Init(texture_id);
+				go->AddComponent(table);
 			break;
+		}
 	}
 
 	auto pos = glm::vec3(x, y, 0);

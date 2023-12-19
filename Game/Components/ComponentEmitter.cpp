@@ -1,5 +1,6 @@
 #include "ComponentEmitter.h"
 #include "ComponentRendererMesh.h"
+#include "Engine/Components/ComponentRendererSprite.h"
 #include "ComponentFollowTarget.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -13,8 +14,23 @@ void ComponentEmitter::Interact() {
 	if (!is_held) {
 		auto item = engine->CreateGameObject("itm-held").lock();
 
-		auto r = std::make_shared<ComponentRendererMesh>();
-		r->Init(_id);
+		auto r = std::make_shared<ComponentRendererSprite>();
+		switch (_id)
+		{
+			case 6: {
+				r->SetSprite("sprites", "tomato.png");
+				break;
+			}
+			case 7: {
+				r->SetSprite("sprites", "carrot.png");
+				break;
+			}
+			default: {
+				r->SetSprite("sprites", "carrot.png");
+				break;
+			}
+		}
+		r->GetSprite()->setScale({0.05, 0.05});
 		item->AddComponent(r);
 
 		auto item_component = std::make_shared<ComponentItem>();

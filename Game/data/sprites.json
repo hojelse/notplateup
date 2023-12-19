@@ -1,0 +1,28 @@
+{"frames": [
+
+{
+	"filename": "carrot.png",
+	"frame": {"x":0,"y":0,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "tomato.png",
+	"frame": {"x":32,"y":0,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sprites.png",
+	"format": "RGBA8888",
+	"size": {"w":64,"h":32},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:31e3ee6be4b3a7cbdf5a8331b8946866:74e7b08a0f93c0a4144661b96c3e4d33:1eabdf11f75e3a4fe3147baf7b5be24b$"
+}
+}

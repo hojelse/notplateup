@@ -9,6 +9,7 @@
 #include "Components/ComponentLevelLayout.h"
 #include "Components/ComponentRendererSphere.h"
 #include "Components/ComponentRendererMesh.h"
+#include "Engine/Components/ComponentRendererSprite.h"
 
 MyEngine::Engine engine;
 

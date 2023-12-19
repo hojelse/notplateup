@@ -1,6 +1,5 @@
 #include "ComponentPlayer.h"
 #include "Engine/MyEngine.h"
-#include "ComponentRendererMesh.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>

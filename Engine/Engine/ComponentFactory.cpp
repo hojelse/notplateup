@@ -5,7 +5,7 @@ namespace MyEngine {
 	std::map<std::string, std::function<std::shared_ptr<MyEngine::Component>()>> ComponentFactory::_componentMap = {
 		{ "CAMERA",[]() { return std::make_shared<ComponentCamera>(); }},
 		{ "RIGIDBODY",[]() { return std::make_shared<ComponentPhysicsBody>(); }},
-		{ "MESH_RENDERER",[]() { return std::make_shared<ComponentRendererMesh>(); }},
+		{ "MESH_RENDERER",[]() { return std::make_shared<ComponentRendererCube>(); }},
 		{ "SPRITE_RENDERER",[]() { return std::make_shared<ComponentRendererSprite>(); }},
 	};
 

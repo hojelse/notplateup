@@ -2,7 +2,7 @@
 
 #include "Engine/Component.h"
 
-class ComponentRendererMesh : public MyEngine::Component {
+class ComponentRendererCube : public MyEngine::Component {
 public:
 	void Init(rapidjson::Value& serializedData) override;
 	void Update(float deltaTime) override;

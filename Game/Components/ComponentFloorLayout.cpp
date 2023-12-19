@@ -23,16 +23,17 @@ void ComponentFloorLayout::Init(rapidjson::Value& serializedData) {
 
 			if (texture_id < 0) continue;
 			if (texture_id > 6*16-1) continue;
-			CreateBox(texture_id, x, y);
+			CreateTile(texture_id, x, y);
 		}
 	}
 }
 
-void ComponentFloorLayout::CreateBox(int texture_id, int x, int y) {
+void ComponentFloorLayout::CreateTile(int texture_id, int x, int y) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto go = engine->CreateGameObject("floor-" + std::to_string(x) + "-" + std::to_string(y)).lock();
 	auto r = std::make_shared<ComponentRendererSquare>();
 	r->Init(texture_id);
+	r->SetRotation(true, false, 0);
 	go->AddComponent(r);
 
 	auto pos = glm::vec3(x, y, -1);

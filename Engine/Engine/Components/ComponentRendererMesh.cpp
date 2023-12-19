@@ -2,7 +2,7 @@
 
 #include "glm/gtx/transform.hpp"
 
-void ComponentRendererMesh::Init(rapidjson::Value& serializedData) {
+void ComponentRendererCube::Init(rapidjson::Value& serializedData) {
 	_mesh = sre::Mesh::create()
         .withPositions(positions)
         .withUVs(uvs)
@@ -17,11 +17,11 @@ void ComponentRendererMesh::Init(rapidjson::Value& serializedData) {
     _material->setTexture(_texture);
 }
 
-void ComponentRendererMesh::Update(float deltaTime) {
+void ComponentRendererCube::Update(float deltaTime) {
 
 }
 
-void ComponentRendererMesh::Render(sre::RenderPass& renderPass) {
+void ComponentRendererCube::Render(sre::RenderPass& renderPass) {
     auto gameObject = GetGameObject().lock();
     if (!gameObject)
         return;

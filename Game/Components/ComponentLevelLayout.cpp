@@ -1,5 +1,4 @@
 #include "ComponentLevelLayout.h"
-#include "ComponentRendererMesh.h"
 #include "Engine/Components/ComponentPhysicsBody.h"
 #include "Engine/MyEngine.h"
 
@@ -9,13 +8,12 @@
 #include "ComponentEmitter.h"
 #include "ComponentConsumer.h"
 #include "ComponentTable.h"
+#include "ComponentRendererSquare.h"
 
 void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	auto dimy = serializedData["layout"].Size();
 	auto dimx = serializedData["layout"][0].Size();
 	
-	auto engine = MyEngine::Engine::GetInstance();
-
 	for (int y = 0; y < dimy; y++) {
 		for (int x = 0; x < dimx; x++) {
 			auto texture_id = serializedData["layout"][y][x].GetInt();
@@ -30,9 +28,23 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto go = engine->CreateGameObject("box-" + std::to_string(x) + "-" + std::to_string(y)).lock();
-	auto r = std::make_shared<ComponentRendererMesh>();
-	r->Init(texture_id);
-	go->AddComponent(r);
+
+	auto r0 = std::make_shared<ComponentRendererSquare>();
+	r0->Init(texture_id);
+	r0->SetRotation(true, false, 3);
+	go->AddComponent(r0);
+
+	auto r1 = std::make_shared<ComponentRendererSquare>();
+	r1->Init(texture_id);
+	r1->SetRotation(true, false, 1);
+	go->AddComponent(r1);
+
+	for (int i = 0; i < 4; i++) {
+		auto r2 = std::make_shared<ComponentRendererSquare>();
+		r2->Init(texture_id);
+		r2->SetRotation(false, true, i);
+		go->AddComponent(r2);
+	}
 
 	switch (texture_id)
 	{

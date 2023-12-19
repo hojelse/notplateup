@@ -11,5 +11,5 @@ public:
 	void Render(sre::RenderPass &renderPass) override;
 
 private:
-	void CreateBox(int texture_id, int x, int y);
+	void CreateTile(int texture_id, int x, int y);
 };

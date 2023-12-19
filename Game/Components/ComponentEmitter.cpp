@@ -1,5 +1,4 @@
 #include "ComponentEmitter.h"
-#include "ComponentRendererMesh.h"
 #include "Engine/Components/ComponentRendererSprite.h"
 #include "ComponentFollowTarget.h"
 #include <glm/glm.hpp>

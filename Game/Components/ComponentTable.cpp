@@ -1,5 +1,4 @@
 #include "ComponentTable.h"
-#include "ComponentRendererMesh.h"
 #include "ComponentFollowTarget.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>

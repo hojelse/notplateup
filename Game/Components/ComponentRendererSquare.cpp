@@ -64,14 +64,20 @@ void ComponentRendererSquare::Update(float deltaTime) {
 
 }
 
+void ComponentRendererSquare::SetRotation(bool rotate_x, bool rotate_y, int rotation) {
+	_rotate_x = rotate_x;
+	_rotate_y = rotate_y;
+	_rotation = rotation;
+}
+
 void ComponentRendererSquare::Render(sre::RenderPass &renderPass) {
 	auto go = GetGameObject().lock();
 	renderPass.draw(
 			_mesh,
 			glm::rotate(
 					go->transform,
-					glm::pi<float>() * 0 / 2,
-					glm::vec3(1, 0, 0)),
+					glm::pi<float>() * _rotation / 2,
+					glm::vec3(_rotate_x, _rotate_y, 0)),
 			_material
 	);
 }

@@ -4,7 +4,7 @@
 
 class ComponentInteractable : public MyEngine::Component {
 public:
-	void Init(int id){
+	virtual void Init(int id){
 		_id = id;
 	}
 

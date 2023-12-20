@@ -48,9 +48,9 @@ void ComponentEmitter::Interact() {
 		auto scl = glm::vec3(0.5, 0.5, 0.5);
 
 		item->transform =
-				glm::translate(pos) *
-				glm::mat4_cast(glm::quat(glm::radians(rot))) *
-				glm::scale(scl);
+			glm::translate(pos) *
+			glm::mat4_cast(glm::quat(glm::radians(rot))) *
+			glm::scale(scl);
 	} else {
 		std::cout << "holding stuff" << std::endl;
 	}

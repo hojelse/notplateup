@@ -48,9 +48,13 @@ void ComponentController::Update(float deltaTime) {
 	float sign = direction_vector.x >= 0 ? -1.0 : 1.0;
 	auto newAngle = acos(glm::dot(direction_vector, glm::vec3(0, -1, 0))) * sign;
 	if (!std::isnan(newAngle)) direction_angle = newAngle;
-	go->setLinearVelocity(
-			vec * deltaTime * mov_speed
-	);
+	if (key_down_shift) {
+		go->setLinearVelocity({0, 0});
+	} else {
+		go->setLinearVelocity(
+				vec * deltaTime * mov_speed
+		);
+	}
 
 	if (dash_cooldown > 0) dash_cooldown -= deltaTime;
 	if (key_down_k && dash_cooldown <= 0) {
@@ -120,6 +124,9 @@ void ComponentController::KeyEvent(SDL_Event &event) {
 		case SDLK_p:
 			key_down_p = event.type == SDL_KEYDOWN;
 			if (key_down_p) MoveTable();
+			break;
+		case SDLK_LSHIFT:
+			key_down_shift = event.type == SDL_KEYDOWN;
 			break;
 	}
 }

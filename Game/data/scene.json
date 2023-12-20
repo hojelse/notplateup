@@ -81,6 +81,8 @@
 					{
 						"typeId": "LEVEL_FLOOR",
 						"serializedData": {
+							"outdoor_texture": 25,
+							"outdoor_padding": 7,
 							"layout": [
 								[ 64,  64,  64,  64,  64,  64,  64,  64, -1,  64,  64],
 								[ 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64],

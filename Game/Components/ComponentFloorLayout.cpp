@@ -7,23 +7,24 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include "glm/gtx/transform.hpp"
-#include "ComponentEmitter.h"
-#include "ComponentConsumer.h"
-#include "ComponentTable.h"
 
 void ComponentFloorLayout::Init(rapidjson::Value& serializedData) {
-	auto dimy = serializedData["layout"].Size();
-	auto dimx = serializedData["layout"][0].Size();
+	auto dim_y = static_cast<int>(serializedData["layout"].Size());
+	auto dim_x = static_cast<int>(serializedData["layout"][0].Size());
+	auto outdoor_texture_id = serializedData["outdoor_texture"].GetInt();
+	auto outdoor_padding = serializedData["outdoor_padding"].GetInt();
 
-	auto engine = MyEngine::Engine::GetInstance();
-
-	for (int y = 0; y < dimy; y++) {
-		for (int x = 0; x < dimx; x++) {
-			auto texture_id = serializedData["layout"][y][x].GetInt();
-
-			if (texture_id < 0) continue;
-			if (texture_id > 6*16-1) continue;
-			CreateTile(texture_id, x, y);
+	for (int y = outdoor_padding * -1; y < dim_y + outdoor_padding; y++) {
+		for (int x = outdoor_padding * -1; x < dim_x + outdoor_padding; x++) {
+			if (x >= 0 && x < dim_x && y >= 0 && y < dim_y && serializedData["layout"][y][x].GetInt() != -1) {
+				// If inside bounds
+				auto texture_id = serializedData["layout"][y][x].GetInt();
+				if (texture_id < 0) continue;
+				if (texture_id > 6*16-1) continue;
+				CreateTile(texture_id , x, y);
+			} else {
+				CreateTile(outdoor_texture_id , x, y);
+			}
 		}
 	}
 }

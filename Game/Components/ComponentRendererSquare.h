@@ -11,6 +11,7 @@ public:
 	void Render(sre::RenderPass& renderPass) override;
 	int GetId() { return _id; }
 	void SetRotation(bool rotate_x, bool rotate_y, int rotation);
+	void SetScaleX(float scale);
 
 private:
 	int _id;
@@ -20,4 +21,5 @@ private:
 	bool _rotate_x;
 	bool _rotate_y;
 	int _rotation;
+	float _scale_x = 1;
 };

@@ -9,17 +9,22 @@
 
 void ComponentConsumer::Update(float delta) {
 	if (is_ordering) patience_left -= delta;
+	if (indicator) {
+		auto r = indicator->FindComponent<ComponentRendererSquare>().lock();
+		r->SetScaleX(patience_left / total_patience);
+	}
 }
 
 void ComponentConsumer::Init(int id) {
 	_id = id;
 }
 
-void ComponentConsumer::CreateOrder(int item_id) {
+void ComponentConsumer::CreateOrder(int item_id, float patience) {
 	auto go = GetGameObject().lock();
 	std::cout << "Placing order " << go->GetName() << std::endl;
 	is_ordering = true;
-	patience_left = 10;
+	patience_left = patience;
+	total_patience = patience;
 	_id = item_id;
 
 	auto pos = go->GetPosition();
@@ -42,7 +47,7 @@ void ComponentConsumer::Interact() {
 		auto item_id = item->GetTypeId();
 		if (_id == item_id + 1) {
 			engine->DeleteGameObject(heldVal);
-
+			indicator = nullptr;
 			auto pos = GetGameObject().lock()->GetPosition();
 			auto indicator_name = "indicator-" + std::to_string((int)pos.x) + "-" + std::to_string((int)pos.y);
 			std::cout << "delete? " << indicator_name << std::endl;
@@ -58,8 +63,8 @@ void ComponentConsumer::Interact() {
 void ComponentConsumer::CreateConsumerIndicator(int id, int x, int y) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto name = "indicator-" + std::to_string(x) + "-" + std::to_string(y);
-	auto item = engine->CreateGameObject(name).lock();
-
+	auto indicator_go = engine->CreateGameObject(name).lock();
+	indicator = indicator_go;
 	auto texture_name = "carrot";
 	switch (id)
 	{
@@ -77,16 +82,18 @@ void ComponentConsumer::CreateConsumerIndicator(int id, int x, int y) {
 		}
 	}
 
-	auto r2 = std::make_shared<ComponentRendererSquare>();
-	r2->Init(texture_name);
-	r2->SetRotation(false, true, 0);
-	item->AddComponent(r2);
+	auto indicator_renderer = std::make_shared<ComponentRendererSquare>();
+	indicator_renderer->Init(texture_name);
+	indicator_renderer->SetRotation(false, true, 0);
+	indicator_go->AddComponent(indicator_renderer);
 
 	auto pos = glm::vec3(x, y, 2);
 	auto rot = glm::vec3(0, 0, 0);
 	auto scl = glm::vec3(0.5, 0.5, 0.5);
 
-	item->transform =
+//	glm::vec3 loading_scale = {patience_left / total_patience, 1, 1};
+
+	indicator_go->transform =
 		glm::translate(pos) *
 		glm::mat4_cast(glm::quat(glm::radians(rot))) *
 		glm::scale(scl);

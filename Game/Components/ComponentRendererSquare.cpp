@@ -136,14 +136,20 @@ void ComponentRendererSquare::SetRotation(bool rotate_x, bool rotate_y, int rota
 	_rotation = rotation;
 }
 
+void ComponentRendererSquare::SetScaleX(float scale) {
+	_scale_x = scale;
+}
+
 void ComponentRendererSquare::Render(sre::RenderPass &renderPass) {
 	auto go = GetGameObject().lock();
+	auto rotated = glm::rotate(
+			go->transform,
+			glm::pi<float>() * _rotation / 2,
+			glm::vec3(_rotate_x, _rotate_y, 0));
+	auto scaled = glm::scale(rotated, {_scale_x, 1, 1});
 	renderPass.draw(
 			_mesh,
-			glm::rotate(
-					go->transform,
-					glm::pi<float>() * _rotation / 2,
-					glm::vec3(_rotate_x, _rotate_y, 0)),
+			scaled,
 			_material
 	);
 }

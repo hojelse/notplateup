@@ -16,8 +16,8 @@ void ComponentEmitter::Interact() {
 		auto r = std::make_shared<ComponentRendererSprite>();
 
 		std::cout << "should start with box-: " << _id << std::endl;
-
-		auto box_id_to_item_id = _id.replace(0, 3, "item");
+		auto id_copy = std::string(_id);
+		auto box_id_to_item_id = id_copy.replace(0, 3, "item");
 		std::cout << "should start with item-: " << box_id_to_item_id << std::endl;
 		r->SetSprite("sprites", box_id_to_item_id + ".png");
 

@@ -13,7 +13,8 @@ public:
 
 private:
 	float time_until_next_order = 5;
-	float time_between_orders = 5;
+	float customer_patience;
+	float time_between_orders;
 	bool queue = false;
 	bool key_down_i = false;
 	float _patience = 10;

@@ -80,7 +80,10 @@
 					},
 					{
 						"typeId": "GAME_LOOP",
-						"serializedData": {}
+						"serializedData": {
+							"order_interval": 10,
+							"customer_patience": 10
+						}
 					},
 					{
 						"typeId": "LEVEL_FLOOR",

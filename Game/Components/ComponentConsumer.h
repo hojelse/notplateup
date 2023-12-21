@@ -7,7 +7,7 @@ public:
 	void Init(int) override;
 	void Update(float) override;
 	bool is_ordering = false;
-	float patience_left = 10;
+	float patience_left =  10;
 private:
 	void Interact() override;
 	void CreateItemIndicator();

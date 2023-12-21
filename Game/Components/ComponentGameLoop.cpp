@@ -30,6 +30,8 @@ std::vector<std::shared_ptr<ComponentConsumer>> GetAvailableConsumers() {
 }
 
 void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
+	time_between_orders = serializedData["order_interval"].GetFloat();
+	customer_patience = serializedData["customer_patience"].GetFloat();
 //	auto dim = serializedData["orders"].Size();
 //	_n = dim/2;
 //

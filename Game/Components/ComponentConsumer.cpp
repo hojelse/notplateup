@@ -36,7 +36,6 @@ void ComponentConsumer::Interact() {
 		if (_id == item_id + 1) {
 			engine->DeleteGameObject(heldVal);
 			is_ordering = false;
-			patience_left = 10;
 		} else {
 			std::cout << "consumer and item are different types" << std::endl;
 		}

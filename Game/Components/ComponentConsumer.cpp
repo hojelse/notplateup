@@ -65,19 +65,20 @@ void ComponentConsumer::CreateConsumerIndicator(int id, int x, int y) {
 	auto name = "indicator-" + std::to_string(x) + "-" + std::to_string(y);
 	auto indicator_go = engine->CreateGameObject(name).lock();
 	indicator = indicator_go;
-	auto texture_name = "carrot";
+
+	auto texture_name = "item-carrot";
 	switch (id)
 	{
 		case 7: {
-			texture_name = "tomato";
+			texture_name = "item-tomato";
 			break;
 		}
 		case 9: {
-			texture_name = "carrot";
+			texture_name = "item-carrot";
 			break;
 		}
 		default: {
-			texture_name = "tomato";
+			texture_name = "item-tomato";
 			break;
 		}
 	}

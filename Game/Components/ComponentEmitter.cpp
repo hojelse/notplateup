@@ -17,15 +17,15 @@ void ComponentEmitter::Interact() {
 		switch (_id)
 		{
 			case 6: {
-				r->SetSprite("sprites", "tomato.png");
+				r->SetSprite("sprites", "item-tomato.png");
 				break;
 			}
 			case 7: {
-				r->SetSprite("sprites", "carrot.png");
+				r->SetSprite("sprites", "item-carrot.png");
 				break;
 			}
 			default: {
-				r->SetSprite("sprites", "carrot.png");
+				r->SetSprite("sprites", "item-carrot.png");
 				break;
 			}
 		}

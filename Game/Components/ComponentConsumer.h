@@ -10,4 +10,5 @@ public:
 	void CreateOrder(int item_id);
 private:
 	void Interact() override;
+	void CreateConsumerIndicator(int id, int x, int y);
 };

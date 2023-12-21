@@ -79,6 +79,10 @@
 						}
 					},
 					{
+						"typeId": "GAME_LOOP",
+						"serializedData": {}
+					},
+					{
 						"typeId": "LEVEL_FLOOR",
 						"serializedData": {
 							"outdoor_texture": 25,

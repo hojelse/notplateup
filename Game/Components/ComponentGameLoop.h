@@ -12,8 +12,11 @@ public:
 	void SubmitItem(int idx);
 
 private:
+	float time_until_next_order = 5;
+	float time_between_orders = 5;
+	bool queue = false;
 	bool key_down_i = false;
-	float _patience;
+	float _patience = 10;
 	float _elapsed;
 	int _n;
 	std::vector<int> _item_states;

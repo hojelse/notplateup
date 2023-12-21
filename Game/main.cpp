@@ -10,6 +10,7 @@
 #include "Components/ComponentRendererSphere.h"
 #include "Engine/Components/ComponentRendererSprite.h"
 #include "Components/ComponentFloorLayout.h"
+#include "Components/ComponentGameLoop.h"
 
 MyEngine::Engine engine;
 
@@ -20,6 +21,7 @@ int main() {
 	MyEngine::ComponentFactory::RegisterComponentOfType("PLAYER_RENDERER", []() { return std::make_shared<ComponentRendererSphere>(); });
 	MyEngine::ComponentFactory::RegisterComponentOfType("LEVEL_LAYOUT", []() { return std::make_shared<ComponentLevelLayout>(); });
 	MyEngine::ComponentFactory::RegisterComponentOfType("LEVEL_FLOOR", []() { return std::make_shared<ComponentFloorLayout>(); });
+	MyEngine::ComponentFactory::RegisterComponentOfType("GAME_LOOP", []() { return std::make_shared<ComponentGameLoop>(); });
 	engine.Init("data/scene.json");
 
 }

@@ -7,12 +7,16 @@
 #include "Engine/Components/ComponentRendererSprite.h"
 
 void ComponentConsumer::Init(rapidjson::Value& id) {
-	Init(id);
+//	Init(id);
+}
+
+void ComponentConsumer::Update(float delta) {
+	if (is_ordering) patience_left -= delta;
 }
 
 void ComponentConsumer::Init(int id) {
 	_id = id;
-	CreateItemIndicator();
+//	CreateItemIndicator();
 }
 
 void ComponentConsumer::Interact() {
@@ -20,12 +24,19 @@ void ComponentConsumer::Interact() {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto isHeld = engine->GameObjectExists(heldVal);
 
+	if (!is_ordering) {
+		std::cout << "This table is not awaiting food" << std::endl;
+		return;
+	}
+
 	if (isHeld) {
 		auto held = engine->GetGameObject(heldVal).lock();
 		auto item = held->FindComponent<ComponentItem>().lock();
 		auto item_id = item->GetTypeId();
 		if (_id == item_id + 1) {
 			engine->DeleteGameObject(heldVal);
+			is_ordering = false;
+			patience_left = 10;
 		} else {
 			std::cout << "consumer and item are different types" << std::endl;
 		}

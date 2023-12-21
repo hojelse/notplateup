@@ -19,6 +19,22 @@ void ComponentConsumer::Init(int id) {
 //	CreateItemIndicator();
 }
 
+void ComponentConsumer::CreateOrder(int item_id) {
+	std::cout << "Placing order " << GetGameObject().lock()->GetName() << std::endl;
+	is_ordering = true;
+	patience_left = 10;
+	_id = item_id;
+	auto engine = MyEngine::Engine::GetInstance();
+	auto go = GetGameObject();
+	auto parent_pos = go.lock()->GetPosition();
+	auto name = "order-" + std::to_string(parent_pos.x) + "-" + std::to_string(parent_pos.y);
+	auto order_icon = engine->CreateGameObject(name, go).lock();
+	auto renderer = order_icon->CreateComponent<ComponentRendererSprite>().lock();
+	renderer->SetSprite("sprites", "carrot.png");
+	renderer->GetSprite()->setScale({0.2, 0.5});
+	order_icon->SetPosition({0,0,3});
+}
+
 void ComponentConsumer::Interact() {
 	auto heldVal = "itm-held";
 	auto engine = MyEngine::Engine::GetInstance();

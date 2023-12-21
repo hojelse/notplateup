@@ -58,17 +58,31 @@ void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 //	_elapsed = 0.0f;
 }
 
-bool AllConsumersHavePatience(std::vector<std::shared_ptr<ComponentConsumer>> consumers) {
-	for (auto& consumer : consumers) {
-		if (consumer->patience_left <= 0) return false;
+bool AllConsumersHavePatience() {
+	auto engine = MyEngine::Engine::GetInstance();
+	for (const auto& pair : engine->_gameObjects) {
+		const std::string& key = pair.first;
+		auto value = pair.second;
+
+		if (key.find("box") != std::string::npos) {
+			auto consumer = value->FindComponent<ComponentConsumer>().lock();
+			if (consumer && consumer->patience_left <= 0 && consumer->is_ordering) {
+				return false;
+			}
+		}
 	}
+
 	return true;
 }
 
 void ComponentGameLoop::Update(float deltaTime) {
 	time_until_next_order -= deltaTime;
+	auto consumers = GetAvailableConsumers();
+	if (!AllConsumersHavePatience()) {
+		std::cout << "A customer lost patience, you lost" << std::endl;
+		return;
+	}
 	if (time_until_next_order <= 0) {
-		auto consumers = GetAvailableConsumers();
 
 		std::cout << "Consumer size: " << std::to_string(consumers.size()) << std::endl;
 		if (consumers.size() == 0) {
@@ -76,14 +90,8 @@ void ComponentGameLoop::Update(float deltaTime) {
 			return;
 		}
 
-		if (!AllConsumersHavePatience(consumers)) {
-			std::cout << "A customer lost patience, you lost" << std::endl;
-		}
 
-		std::cout << "Placing order " << consumers[0]->GetGameObject().lock()->GetName() << std::endl;
-		consumers[0]->is_ordering = true;
-		consumers[0]->patience_left = 10;
-		consumers[0]->Init(7);
+		consumers[0]->CreateOrder(7);
 		time_until_next_order = time_between_orders;
 	}
 

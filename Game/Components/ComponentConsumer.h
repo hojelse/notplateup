@@ -8,6 +8,7 @@ public:
 	void Update(float) override;
 	bool is_ordering = false;
 	float patience_left =  10;
+	void CreateOrder(int item_id);
 private:
 	void Interact() override;
 	void CreateItemIndicator();

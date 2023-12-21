@@ -88,16 +88,16 @@
 					{
 						"typeId": "LEVEL_FLOOR",
 						"serializedData": {
-							"outdoor_texture": 25,
-							"outdoor_padding": 0,
+							"outdoor_texture": "grass",
+							"outdoor_padding": 2,
 							"layout": [
-								[ 64,  64,  64,  64,  64,  64,  64,  64, -1,  64,  64],
-								[ 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64],
-								[ 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64],
-								[ 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64],
-								[ 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64],
-								[ 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64],
-								[ 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,  64]
+								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],
+								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],
+								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],
+								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],
+								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],
+								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],
+								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"]
 							]
 						}
 					}

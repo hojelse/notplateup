@@ -11,16 +11,14 @@
 void ComponentFloorLayout::Init(rapidjson::Value& serializedData) {
 	auto dim_y = static_cast<int>(serializedData["layout"].Size());
 	auto dim_x = static_cast<int>(serializedData["layout"][0].Size());
-	auto outdoor_texture_id = serializedData["outdoor_texture"].GetInt();
+	auto outdoor_texture_id = serializedData["outdoor_texture"].GetString();
 	auto outdoor_padding = serializedData["outdoor_padding"].GetInt();
 
 	for (int y = outdoor_padding * -1; y < dim_y + outdoor_padding; y++) {
 		for (int x = outdoor_padding * -1; x < dim_x + outdoor_padding; x++) {
-			if (x >= 0 && x < dim_x && y >= 0 && y < dim_y && serializedData["layout"][y][x].GetInt() != -1) {
+			if (x >= 0 && x < dim_x && y >= 0 && y < dim_y && serializedData["layout"][y][x].GetString() != "") {
 				// If inside bounds
-				auto texture_id = serializedData["layout"][y][x].GetInt();
-				if (texture_id < 0) continue;
-				if (texture_id > 6*16-1) continue;
+				auto texture_id = serializedData["layout"][y][x].GetString();
 				CreateTile(texture_id , x, y);
 			} else {
 				CreateTile(outdoor_texture_id , x, y);
@@ -29,7 +27,7 @@ void ComponentFloorLayout::Init(rapidjson::Value& serializedData) {
 	}
 }
 
-void ComponentFloorLayout::CreateTile(int texture_id, int x, int y) {
+void ComponentFloorLayout::CreateTile(std::string texture_id, int x, int y) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto go = engine->CreateGameObject("floor-" + std::to_string(x) + "-" + std::to_string(y)).lock();
 	auto r = std::make_shared<ComponentRendererSquare>();

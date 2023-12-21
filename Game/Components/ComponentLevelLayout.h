@@ -12,4 +12,5 @@ public:
 
 private:
 	void CreateBox(int texture_id, int x, int y);
+	void CreateConsumerIndicator(int id, int x, int y, std::string follow_target);
 };

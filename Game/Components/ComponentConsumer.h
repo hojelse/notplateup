@@ -3,7 +3,6 @@
 
 class ComponentConsumer : public ComponentInteractable {
 public:
-	void Init(rapidjson::Value&) override;
 	void Init(int) override;
 	void Update(float) override;
 	bool is_ordering = false;
@@ -11,5 +10,4 @@ public:
 	void CreateOrder(int item_id);
 private:
 	void Interact() override;
-	void CreateItemIndicator();
 };

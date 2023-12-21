@@ -1,6 +1,7 @@
 #include "ComponentLevelLayout.h"
 #include "Engine/Components/ComponentPhysicsBody.h"
 #include "Engine/MyEngine.h"
+#include "Engine/GameObject.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -9,6 +10,8 @@
 #include "ComponentConsumer.h"
 #include "ComponentTable.h"
 #include "ComponentRendererSquare.h"
+#include "ComponentFollowTarget.h"
+#include "Engine/Components/ComponentRendererSprite.h"
 
 void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	auto dimy = serializedData["layout"].Size();
@@ -27,7 +30,8 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 
 void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 	auto engine = MyEngine::Engine::GetInstance();
-	auto go = engine->CreateGameObject("box-" + std::to_string(x) + "-" + std::to_string(y)).lock();
+	auto name = "box-" + std::to_string(x) + "-" + std::to_string(y);
+	auto go = engine->CreateGameObject(name).lock();
 
 	auto r0 = std::make_shared<ComponentRendererSquare>();
 	r0->Init(texture_id);
@@ -60,6 +64,8 @@ void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 			auto consumer = std::make_shared<ComponentConsumer>();
 			consumer->Init(texture_id);
 			go->AddComponent(consumer);
+
+			CreateConsumerIndicator(texture_id, x, y, name);
 			break;
 		}
 		default: {
@@ -84,6 +90,43 @@ void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 	auto isSensor = false;
 	glm::vec2 size { 0.5, 0.5 };
 	body->CreateBody(bodyType, isSensor, size);
+}
+
+void ComponentLevelLayout::CreateConsumerIndicator(int id, int x, int y, std::string follow_target) {
+	auto engine = MyEngine::Engine::GetInstance();
+	auto name = "indicator-" + std::to_string(x) + "-" + std::to_string(y);
+	auto item = engine->CreateGameObject(name).lock();
+
+	auto texture_name = "carrot";
+	switch (id)
+	{
+		case 7: {
+			texture_name = "tomato";
+			break;
+		}
+		case 9: {
+			texture_name = "carrot";
+			break;
+		}
+		default: {
+			texture_name = "tomato";
+			break;
+		}
+	}
+
+	auto r2 = std::make_shared<ComponentRendererSquare>();
+	r2->Init(texture_name);
+	r2->SetRotation(false, true, 0);
+	item->AddComponent(r2);
+
+	auto pos = glm::vec3(x, y, 2);
+	auto rot = glm::vec3(0, 0, 0);
+	auto scl = glm::vec3(0.5, 0.5, 0.5);
+
+	item->transform =
+		glm::translate(pos) *
+		glm::mat4_cast(glm::quat(glm::radians(rot))) *
+		glm::scale(scl);
 }
 
 void ComponentLevelLayout::Update(float deltaTime) {

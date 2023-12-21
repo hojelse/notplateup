@@ -16,16 +16,13 @@ void ComponentEmitter::Interact() {
 		auto r = std::make_shared<ComponentRendererSprite>();
 
 		std::cout << "should start with box-: " << _id << std::endl;
-		auto id_copy = std::string(_id);
-		auto box_id_to_item_id = id_copy.replace(0, 3, "item");
-		std::cout << "should start with item-: " << box_id_to_item_id << std::endl;
-		r->SetSprite("sprites", box_id_to_item_id + ".png");
+		r->SetSprite("sprites", "item-" + GeneralId() + ".png");
 
 		r->GetSprite()->setScale({0.05, 0.05});
 		item->AddComponent(r);
 
 		auto item_component = std::make_shared<ComponentItem>();
-		item_component->Init(_id);
+		item_component->Init(GeneralId());
 		item->AddComponent(item_component);
 
 		auto f = std::make_shared<ComponentFollowTarget>();

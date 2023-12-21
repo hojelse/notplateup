@@ -45,7 +45,7 @@ void ComponentConsumer::Interact() {
 		auto held = engine->GetGameObject(heldVal).lock();
 		auto item = held->FindComponent<ComponentItem>().lock();
 		auto item_id = item->GetTypeId();
-		if (_id == item_id) {
+		if (GeneralId() == item_id) {
 			engine->DeleteGameObject(heldVal);
 			indicator = nullptr;
 			auto pos = GetGameObject().lock()->GetPosition();

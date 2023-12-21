@@ -10,6 +10,15 @@ public:
 
 	virtual void Interact() {};
 
+	std::string GeneralId() {
+		size_t dashPosition = _id.find('-');
+
+		if (dashPosition != std::string::npos) {
+			return _id.substr(dashPosition + 1);
+		}
+		return _id;
+	}
+
 protected:
 	std::string _id;
 };

@@ -90,7 +90,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 			return;
 		}
 
-		consumers[0]->CreateOrder(7, customer_patience);
+		consumers[0]->CreateOrder("item-tomato", customer_patience);
 		time_until_next_order = time_between_orders;
 	}
 

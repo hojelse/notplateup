@@ -19,19 +19,33 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	
 	for (int y = 0; y < dimy; y++) {
 		for (int x = 0; x < dimx; x++) {
-			auto texture_id = serializedData["layout"][y][x].GetInt();
-
-			if (texture_id < 0) continue;
-			if (texture_id > 6*16-1) continue;
+			auto texture_id = serializedData["layout"][y][x].GetString();
 			CreateBox(texture_id, x, y);
 		}
 	}
 }
 
-void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
+void ComponentLevelLayout::CreateBox(std::string texture_id, int x, int y) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto name = "box-" + std::to_string(x) + "-" + std::to_string(y);
 	auto go = engine->CreateGameObject(name).lock();
+
+	if (texture_id.find("box-") != std::string::npos) {
+		auto emitter = std::make_shared<ComponentEmitter>();
+		emitter->Init(texture_id);
+		go->AddComponent(emitter);
+	} else if (texture_id.find("consumer") != std::string::npos) {
+		auto consumer = std::make_shared<ComponentConsumer>();
+		consumer->Init(texture_id);
+		go->AddComponent(consumer);
+	} else if (texture_id.find("box") != std::string::npos) {
+		auto table = std::make_shared<ComponentTable>();
+		table->Init(texture_id);
+		go->AddComponent(table);
+	} else {
+		// don't
+		return;
+	}
 
 	auto r0 = std::make_shared<ComponentRendererSquare>();
 	r0->Init(texture_id);
@@ -48,30 +62,6 @@ void ComponentLevelLayout::CreateBox(int texture_id, int x, int y) {
 		r2->Init(texture_id);
 		r2->SetRotation(false, true, i);
 		go->AddComponent(r2);
-	}
-
-	switch (texture_id)
-	{
-		case 6:
-		case 8: {
-				auto emitter = std::make_shared<ComponentEmitter>();
-				emitter->Init(texture_id);
-				go->AddComponent(emitter);
-				break;
-			}
-		case 7:
-		case 9: {
-			auto consumer = std::make_shared<ComponentConsumer>();
-			consumer->Init(texture_id);
-			go->AddComponent(consumer);
-			break;
-		}
-		default: {
-			auto table = std::make_shared<ComponentTable>();
-				table->Init(texture_id);
-				go->AddComponent(table);
-			break;
-		}
 	}
 
 	auto pos = glm::vec3(x, y, 0);

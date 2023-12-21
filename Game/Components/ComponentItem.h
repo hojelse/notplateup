@@ -3,12 +3,12 @@
 
 class ComponentItem : public MyEngine::Component {
 public:
-	void Init(int type_id) {
+	void Init(std::string type_id) {
 		_type_id = type_id;
 	}
-	int GetTypeId() {
+	std::string GetTypeId() {
 		return _type_id;
 	}
 private:
-	int _type_id;
+	std::string _type_id;
 };

@@ -11,6 +11,6 @@ public:
 	void Render(sre::RenderPass &renderPass) override;
 
 private:
-	void CreateBox(int texture_id, int x, int y);
+	void CreateBox(std::string texture_id, int x, int y);
 	void CreateConsumerIndicator(int id, int x, int y);
 };

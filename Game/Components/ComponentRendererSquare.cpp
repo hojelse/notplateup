@@ -19,7 +19,7 @@
 
 
 void ComponentRendererSquare::Init(rapidjson::Value &serializedData) {
-	const int texture_id = serializedData.GetInt();
+	const std::string texture_id = serializedData.GetString();
 	Init(texture_id);
 }
 
@@ -80,6 +80,10 @@ void ComponentRendererSquare::Init(std::string texture_name) {
 		if (frames[i]["filename"].GetString() == texture_name + ".png") {
 			break;
 		}
+	}
+
+	if (i == frames.Size()) {
+		std::cout << "could not find texture: " << texture_name + ".png" << std::endl;
 	}
 
 	auto texture_size = glm::vec2 (

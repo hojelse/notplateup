@@ -3,14 +3,14 @@
 
 class ComponentConsumer : public ComponentInteractable {
 public:
-	void Init(int) override;
+	void Init(std::string) override;
 	void Update(float) override;
 	bool is_ordering = false;
 	float patience_left =  10;
 	float total_patience;
-	void CreateOrder(int item_id, float patience);
+	void CreateOrder(std::string item_id, float patience);
 private:
 	void Interact() override;
-	void CreateConsumerIndicator(int id, int x, int y);
+	void CreateConsumerIndicator(std::string id, int x, int y);
 	std::shared_ptr<MyEngine::GameObject> indicator;
 };

@@ -15,11 +15,11 @@ void ComponentConsumer::Update(float delta) {
 	}
 }
 
-void ComponentConsumer::Init(int id) {
+void ComponentConsumer::Init(std::string id) {
 	_id = id;
 }
 
-void ComponentConsumer::CreateOrder(int item_id, float patience) {
+void ComponentConsumer::CreateOrder(std::string item_id, float patience) {
 	auto go = GetGameObject().lock();
 	std::cout << "Placing order " << go->GetName() << std::endl;
 	is_ordering = true;
@@ -45,7 +45,7 @@ void ComponentConsumer::Interact() {
 		auto held = engine->GetGameObject(heldVal).lock();
 		auto item = held->FindComponent<ComponentItem>().lock();
 		auto item_id = item->GetTypeId();
-		if (_id == item_id + 1) {
+		if (_id == item_id) {
 			engine->DeleteGameObject(heldVal);
 			indicator = nullptr;
 			auto pos = GetGameObject().lock()->GetPosition();
@@ -60,31 +60,14 @@ void ComponentConsumer::Interact() {
 	}
 }
 
-void ComponentConsumer::CreateConsumerIndicator(int id, int x, int y) {
+void ComponentConsumer::CreateConsumerIndicator(std::string id, int x, int y) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto name = "indicator-" + std::to_string(x) + "-" + std::to_string(y);
 	auto indicator_go = engine->CreateGameObject(name).lock();
 	indicator = indicator_go;
 
-	auto texture_name = "item-carrot";
-	switch (id)
-	{
-		case 7: {
-			texture_name = "item-tomato";
-			break;
-		}
-		case 9: {
-			texture_name = "item-carrot";
-			break;
-		}
-		default: {
-			texture_name = "item-tomato";
-			break;
-		}
-	}
-
 	auto indicator_renderer = std::make_shared<ComponentRendererSquare>();
-	indicator_renderer->Init(texture_name);
+	indicator_renderer->Init(id);
 	indicator_renderer->SetRotation(false, true, 0);
 	indicator_go->AddComponent(indicator_renderer);
 

@@ -14,21 +14,13 @@ void ComponentEmitter::Interact() {
 		auto item = engine->CreateGameObject("itm-held").lock();
 
 		auto r = std::make_shared<ComponentRendererSprite>();
-		switch (_id)
-		{
-			case 6: {
-				r->SetSprite("sprites", "item-tomato.png");
-				break;
-			}
-			case 7: {
-				r->SetSprite("sprites", "item-carrot.png");
-				break;
-			}
-			default: {
-				r->SetSprite("sprites", "item-carrot.png");
-				break;
-			}
-		}
+
+		std::cout << "should start with box-: " << _id << std::endl;
+
+		auto box_id_to_item_id = _id.replace(0, 3, "item");
+		std::cout << "should start with item-: " << box_id_to_item_id << std::endl;
+		r->SetSprite("sprites", box_id_to_item_id + ".png");
+
 		r->GetSprite()->setScale({0.05, 0.05});
 		item->AddComponent(r);
 

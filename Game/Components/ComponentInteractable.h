@@ -4,12 +4,12 @@
 
 class ComponentInteractable : public MyEngine::Component {
 public:
-	virtual void Init(int id){
+	virtual void Init(std::string id){
 		_id = id;
 	}
 
 	virtual void Interact() {};
 
 protected:
-	int _id;
+	std::string _id;
 };

@@ -22,8 +22,7 @@ void ComponentTable::Interact() {
 		auto held_item = engine->GetGameObject("itm-held").lock();
 		held_item->SetPosition(table_pos + glm::vec3(0,0,1));
 
-		engine->_gameObjects.erase("itm-held");
-		engine->_gameObjects[item_on_box_id] = held_item;
+		engine->RenameGameObject("itm-held", item_on_box_id);
 		
 		auto f = held_item->FindComponent<ComponentFollowTarget>().lock();
 		held_item->RemoveComponent(f);
@@ -34,9 +33,7 @@ void ComponentTable::Interact() {
 		auto item_on_box = engine->GetGameObject(item_on_box_id).lock();
 
 		item_on_box->SetPosition({0, 0, -2});
-		item_on_box->SetName("itm-held");
-		engine->_gameObjects.erase(item_on_box_id);
-		engine->_gameObjects["itm-held"] = item_on_box;
+		engine->RenameGameObject(item_on_box_id, "itm-held");
 
 		auto f = std::make_shared<ComponentFollowTarget>();
 		f->Init(

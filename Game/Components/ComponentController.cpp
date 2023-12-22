@@ -160,9 +160,7 @@ void ComponentController::MoveTable() {
 		std::cout << "pickup box!" << std::endl;
 		auto box = engine->GetGameObject(box_id).lock();
 		box->SetPosition({-1, -1, 0});
-		box->SetName("box-held");
-		engine->_gameObjects.erase(box_id);
-		engine->_gameObjects["box-held"] = box;
+		engine->RenameGameObject(box_id, "box-held");
 
 		// Make box follow player
 		auto f = std::make_shared<ComponentFollowTarget>();
@@ -182,9 +180,7 @@ void ComponentController::MoveTable() {
 		box->SetPosition(
 			glm::vec3(x, y, 0)
 		);
-		box->SetName(box_id);
-		engine->_gameObjects.erase("box-held");
-		engine->_gameObjects[box_id] = box;
+		engine->RenameGameObject("box-held", box_id);
 
 		// Make box NOT follow player
 		auto f = box->FindComponent<ComponentFollowTarget>().lock();

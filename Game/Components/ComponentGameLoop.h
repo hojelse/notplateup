@@ -12,7 +12,7 @@ class ComponentGameLoop : public MyEngine::Component {
 public:
 	void SetGameState(GameState new_state);
 	GameState GetGameState();
-	void SubmitItem(int idx);
+	void ResetGame();
 
 private:
 	float time_until_next_order = 5;

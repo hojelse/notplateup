@@ -58,11 +58,19 @@ namespace MyEngine {
 		std::weak_ptr<GameObject> CreateGameObject(std::string name, std::weak_ptr<GameObject> parent);
 		std::weak_ptr<GameObject> GetGameObject(std::string name) { return _gameObjects[name]; }
 		void DeleteGameObject(std::string name) { _gameObjects.erase(name); }
+		void RenameGameObject(std::string old_name, std::string new_name) {
+			if (!GameObjectExists(old_name)) return;
+			auto go = _gameObjects[old_name];
+			_gameObjects.erase(old_name);
+			_gameObjects[new_name] = go;
+			go->SetName(new_name);
+		}
         bool GameObjectExists(std::string name) { return _gameObjects.find(name) != _gameObjects.end(); }
 		void DestroyGameObject(GameObject* gameObject);
+		std::map<std::string, std::shared_ptr<GameObject>> GetGameObjects() { return _gameObjects; }
 
-		std::map<std::string, std::shared_ptr<GameObject>> _gameObjects;
 	private:
+		std::map<std::string, std::shared_ptr<GameObject>> _gameObjects;
 		// scene graph
 		std::weak_ptr<GameObject> _root;
 		std::list<GameObject*> _toBeDestroyed;

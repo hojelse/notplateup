@@ -11,7 +11,7 @@
 std::vector<std::shared_ptr<ComponentConsumer>> GetAvailableConsumers() {
 	auto engine = MyEngine::Engine::GetInstance();
 	std::vector<std::shared_ptr<ComponentConsumer>> consumers = {};
-	for (const auto& pair : engine->_gameObjects) {
+	for (const auto& pair : engine->GetGameObjects()) {
 		const std::string& key = pair.first;
 		auto value = pair.second;
 
@@ -55,7 +55,7 @@ void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 
 bool AllConsumersHavePatience() {
 	auto engine = MyEngine::Engine::GetInstance();
-	for (const auto& pair : engine->_gameObjects) {
+	for (const auto& pair : engine->GetGameObjects()) {
 		const std::string& key = pair.first;
 		auto value = pair.second;
 
@@ -68,6 +68,25 @@ bool AllConsumersHavePatience() {
 	}
 
 	return true;
+}
+
+void ResetConsumers() {
+	auto engine = MyEngine::Engine::GetInstance();
+	for (const auto& pair : engine->GetGameObjects()) {
+		const std::string& key = pair.first;
+		auto value = pair.second;
+
+		if (key.find("box") != std::string::npos) {
+			auto consumer = value->FindComponent<ComponentConsumer>().lock();
+			if (consumer) {
+				consumer->is_ordering = false;
+				if (consumer->indicator) {
+					engine->DeleteGameObject(consumer->indicator->GetName());
+					consumer->indicator = nullptr;
+				}
+			}
+		}
+	}
 }
 
 void ComponentGameLoop::Update(float deltaTime) {
@@ -89,14 +108,34 @@ void ComponentGameLoop::Update(float deltaTime) {
 		}
 		std::srand(std::time(nullptr));
 		auto item_id = std::rand() % items.size();
-		consumers[0]->CreateOrder(items[item_id], customer_patience);
+		auto consumer_index = std::rand() % consumers.size();
+		consumers[consumer_index]->CreateOrder(items[item_id], customer_patience);
 		time_until_next_order = time_between_orders;
 	}
 }
 
 void ComponentGameLoop::SetGameState(GameState new_state) {
+	if (new_state == GAMEOVER) ResetGame();
 	std::cout << "Game state set to " << std::to_string(new_state) << std::endl;
 	_game_state = new_state;
+}
+
+void DeleteItems() {
+	auto engine = MyEngine::Engine::GetInstance();
+	for (const auto& pair : engine->GetGameObjects()) {
+		const std::string& key = pair.first;
+		auto value = pair.second;
+
+		if (key.find("itm-") != std::string::npos) {
+			engine->DeleteGameObject(value->GetName());
+		}
+	}
+}
+
+void ComponentGameLoop::ResetGame() {
+	ResetConsumers();
+	DeleteItems();
+	time_until_next_order = time_between_orders;
 }
 
 void ComponentGameLoop::KeyEvent(SDL_Event &event) {

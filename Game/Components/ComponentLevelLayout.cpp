@@ -19,7 +19,8 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	
 	for (int y = 0; y < dimy; y++) {
 		for (int x = 0; x < dimx; x++) {
-			auto texture_id = serializedData["layout"][y][x].GetString();
+			std::string texture_id = serializedData["layout"][y][x].GetString();
+			if (texture_id.empty()) continue;
 			CreateBox(texture_id, x, y);
 		}
 	}
@@ -44,6 +45,7 @@ void ComponentLevelLayout::CreateBox(std::string texture_id, int x, int y) {
 		go->AddComponent(table);
 	} else {
 		// don't
+		std::cout << "this should never happen :-) you messed up boy" << std::endl;
 		return;
 	}
 

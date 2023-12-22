@@ -100,6 +100,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 
 	if (orders_completed_today >= orders_pr_day) {
 		SetGameState(EDIT);
+		day++;
 		return;
 	}
 
@@ -150,8 +151,11 @@ void DeleteItems() {
 
 void ComponentGameLoop::ResetGame() {
 	ClearDay();
+	time_between_orders = initial_time_between_orders;
+	customer_patience = initial_customer_patience;
 	orders_pr_day = initial_orders_pr_day;
 	orders_completed_today = 0;
+	day = 0;
 	// TODO clear all gameobject and create level from scratch
 }
 

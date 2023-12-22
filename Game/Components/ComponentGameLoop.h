@@ -25,6 +25,7 @@ private:
 	int initial_orders_pr_day;
 	int orders_pr_day;
 	int orders_completed_today = 0;
+	int day = 0;
 	std::vector<std::string> items;
 	bool queue = false;
 	bool key_down_i = false;

@@ -2,6 +2,7 @@
 
 #include "Engine/Component.h"
 #include "ComponentGameLoop.h"
+#include "../GameState.h"
 
 class ComponentGameLoop : public MyEngine::Component {
 	void Init(rapidjson::Value&) override;
@@ -9,6 +10,8 @@ class ComponentGameLoop : public MyEngine::Component {
 	void KeyEvent(SDL_Event&) override;
 
 public:
+	void SetGameState(GameState new_state);
+	GameState GetGameState();
 	void SubmitItem(int idx);
 
 private:
@@ -19,10 +22,10 @@ private:
 	bool queue = false;
 	bool key_down_i = false;
 	float _patience = 10;
+	GameState _game_state = EDIT;
 	float _elapsed;
 	int _n;
 	std::vector<int> _item_states;
-	int _game_state;
 	std::vector<float> _start;
 	std::vector<int> _item_id;
 };

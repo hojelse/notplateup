@@ -2,6 +2,7 @@
 
 #include "Engine/Component.h"
 #include "Engine/Components/ComponentPhysicsBody.h"
+#include "ComponentGameLoop.h"
 
 
 class ComponentController : public MyEngine::Component {
@@ -37,6 +38,7 @@ private:
 	bool key_down_shift = false;
 	float dash_cooldown = 0;
 	float dash_timer = 0;
+	std::shared_ptr<ComponentGameLoop> _game_loop;
 
 	float action_timeout = 0.0f;
 };

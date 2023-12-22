@@ -8,12 +8,15 @@
 #include "SDL.h"
 #include "ComponentInteractable.h"
 #include "ComponentFollowTarget.h"
+#include "ComponentGameLoop.h"
 #include <cmath>
 
 void ComponentController::Init(rapidjson::Value &serializedData) {
 	mov_speed = serializedData["movSpeed"].GetFloat();
 	rot_speed = serializedData["rotSpeed"].GetFloat();
-
+	auto engine = MyEngine::Engine::GetInstance();
+	auto game_loop = engine->GetGameObject("game_loop").lock()->FindComponent<ComponentGameLoop>().lock();
+	_game_loop = game_loop;
 	auto go = GetGameObject().lock();
 	if (!go) return;
 	_body = go->FindComponent<ComponentPhysicsBody>();
@@ -119,11 +122,18 @@ void ComponentController::KeyEvent(SDL_Event &event) {
 			break;
 		case SDLK_o:
 			key_down_o = event.type == SDL_KEYDOWN;
-			if (key_down_o) Interact();
-			break;
-		case SDLK_p:
-			key_down_p = event.type == SDL_KEYDOWN;
-			if (key_down_p) MoveTable();
+			if (key_down_o) {
+				switch (_game_loop->GetGameState()) {
+					case PLAYING:
+						Interact();
+						break;
+					case EDIT:
+						MoveTable();
+						break;
+					default:
+						break;
+				}
+			}
 			break;
 		case SDLK_LSHIFT:
 			key_down_shift = event.type == SDL_KEYDOWN;

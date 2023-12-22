@@ -27,6 +27,23 @@
 				"children": []
 			},
 			{
+				"name": "game_loop",
+				"transform": {
+					"position": [0, 0, 0],
+					"rotation": [0, 0, 0],
+					"scale": [1, 1, 1]
+				},
+				"components": [
+					{
+						"typeId": "GAME_LOOP",
+						"serializedData": {
+							"order_interval": 10,
+							"customer_patience": 10
+						}
+					}
+				]
+			},
+			{
 				"name": "player",
 				"transform": {
 					"position": [5, 0, 0],
@@ -79,17 +96,10 @@
 						}
 					},
 					{
-						"typeId": "GAME_LOOP",
-						"serializedData": {
-							"order_interval": 10,
-							"customer_patience": 10
-						}
-					},
-					{
 						"typeId": "LEVEL_FLOOR",
 						"serializedData": {
 							"outdoor_texture": "grass",
-							"outdoor_padding": 2,
+							"outdoor_padding": 7,
 							"layout": [
 								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],
 								[ "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor",  "floor"],

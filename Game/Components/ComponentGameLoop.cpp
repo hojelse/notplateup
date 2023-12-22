@@ -30,6 +30,10 @@ bool startsWith(const std::string& fullString, const std::string& prefix) {
 	return fullString.compare(0, prefix.length(), prefix) == 0;
 }
 
+GameState ComponentGameLoop::GetGameState() {
+	return _game_state;
+}
+
 void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 	time_between_orders = serializedData["order_interval"].GetFloat();
 	customer_patience = serializedData["customer_patience"].GetFloat();
@@ -67,9 +71,11 @@ bool AllConsumersHavePatience() {
 }
 
 void ComponentGameLoop::Update(float deltaTime) {
+	if (_game_state != PLAYING) return;
 	time_until_next_order -= deltaTime;
 	auto consumers = GetAvailableConsumers();
 	if (!AllConsumersHavePatience()) {
+		SetGameState(GAMEOVER);
 		std::cout << "A customer lost patience, you lost" << std::endl;
 		return;
 	}
@@ -77,6 +83,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 
 		std::cout << "Consumer size: " << std::to_string(consumers.size()) << std::endl;
 		if (consumers.size() == 0) {
+			SetGameState(GAMEOVER);
 			std::cout << "No available tables, you lost" << std::endl;
 			return;
 		}
@@ -87,6 +94,26 @@ void ComponentGameLoop::Update(float deltaTime) {
 	}
 }
 
-void ComponentGameLoop::KeyEvent(SDL_Event &event) {
+void ComponentGameLoop::SetGameState(GameState new_state) {
+	std::cout << "Game state set to " << std::to_string(new_state) << std::endl;
+	_game_state = new_state;
+}
 
+void ComponentGameLoop::KeyEvent(SDL_Event &event) {
+	switch (event.key.keysym.sym) {
+		case SDLK_SPACE:
+			if (event.type == SDL_KEYDOWN) {
+				switch (_game_state) {
+					case EDIT:
+						SetGameState(PLAYING);
+						break;
+					case GAMEOVER:
+						SetGameState(EDIT);
+						break;
+					default:
+						break;
+				}
+			}
+			break;
+	}
 }

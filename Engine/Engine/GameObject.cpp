@@ -64,7 +64,6 @@ namespace MyEngine {
 	}
 
 	void GameObject::OnCollisionStart(ComponentPhysicsBody* other, b2Manifold* manifold) {
-		std::cout << _name << std::endl;
 		for (auto& component : _components)
 			component->OnCollisionStart(other, manifold);
 	}

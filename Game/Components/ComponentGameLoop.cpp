@@ -1,9 +1,12 @@
 #include "ComponentGameLoop.h"
 #include <glm/gtx/matrix_decompose.hpp>
+#include <fstream>
 #include "Engine/MyEngine.h"
 #include "SDL.h"
 #include "ComponentFollowTarget.h"
 #include "ComponentConsumer.h"
+#include "rapidjson/istreamwrapper.h"
+#include <ctime>
 
 std::vector<std::shared_ptr<ComponentConsumer>> GetAvailableConsumers() {
 	auto engine = MyEngine::Engine::GetInstance();
@@ -23,9 +26,27 @@ std::vector<std::shared_ptr<ComponentConsumer>> GetAvailableConsumers() {
 	return consumers;
 }
 
+bool startsWith(const std::string& fullString, const std::string& prefix) {
+	return fullString.compare(0, prefix.length(), prefix) == 0;
+}
+
 void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 	time_between_orders = serializedData["order_interval"].GetFloat();
 	customer_patience = serializedData["customer_patience"].GetFloat();
+	std::ifstream fis("data/sprites.json");
+	rapidjson::IStreamWrapper isw(fis);
+	rapidjson::Document document;
+	document.ParseStream(isw);
+
+	auto frames = document["frames"].GetArray();
+	int i = 0;
+	for (; i < frames.Size(); i++) {
+		std::string frame_name = frames[i]["filename"].GetString();
+		if (startsWith(frame_name, "item-")) {
+			auto without_extension = frame_name.substr(0, frame_name.length() - 4);
+			items.emplace_back(without_extension);
+		}
+	}
 }
 
 bool AllConsumersHavePatience() {
@@ -59,8 +80,9 @@ void ComponentGameLoop::Update(float deltaTime) {
 			std::cout << "No available tables, you lost" << std::endl;
 			return;
 		}
-
-		consumers[0]->CreateOrder("item-tomato", customer_patience);
+		std::srand(std::time(nullptr));
+		auto item_id = std::rand() % items.size();
+		consumers[0]->CreateOrder(items[item_id], customer_patience);
 		time_until_next_order = time_between_orders;
 	}
 }

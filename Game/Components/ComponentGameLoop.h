@@ -15,6 +15,7 @@ private:
 	float time_until_next_order = 5;
 	float customer_patience;
 	float time_between_orders;
+	std::vector<std::string> items;
 	bool queue = false;
 	bool key_down_i = false;
 	float _patience = 10;

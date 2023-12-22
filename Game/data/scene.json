@@ -37,8 +37,9 @@
 					{
 						"typeId": "GAME_LOOP",
 						"serializedData": {
-							"order_interval": 10,
-							"customer_patience": 10
+							"initial_time_between_orders": 10,
+							"initial_customer_patience": 10,
+							"initial_orders_pr_day": 3
 						}
 					}
 				]

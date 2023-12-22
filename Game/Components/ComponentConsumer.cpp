@@ -6,6 +6,7 @@
 #include "Engine/MyEngine.h"
 #include "Engine/Components/ComponentRendererSprite.h"
 #include "ComponentRendererSquare.h"
+#include "ComponentGameLoop.h"
 
 void ComponentConsumer::Update(float delta) {
 	if (is_ordering) patience_left -= delta;
@@ -46,6 +47,9 @@ void ComponentConsumer::Interact() {
 		auto item = held->FindComponent<ComponentItem>().lock();
 		auto item_id = item->GetTypeId();
 		if (GeneralId() == item_id) {
+			auto gl = engine->GetGameObject("game_loop").lock()->FindComponent<ComponentGameLoop>().lock();
+			gl->OrderCompleted();
+
 			engine->DeleteGameObject(heldVal);
 			indicator = nullptr;
 			auto pos = GetGameObject().lock()->GetPosition();

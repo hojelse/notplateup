@@ -13,11 +13,18 @@ public:
 	void SetGameState(GameState new_state);
 	GameState GetGameState();
 	void ResetGame();
+	void ClearDay();
+	void OrderCompleted();
 
 private:
 	float time_until_next_order = 5;
-	float customer_patience;
+	float initial_time_between_orders;
 	float time_between_orders;
+	float initial_customer_patience;
+	float customer_patience;
+	int initial_orders_pr_day;
+	int orders_pr_day;
+	int orders_completed_today = 0;
 	std::vector<std::string> items;
 	bool queue = false;
 	bool key_down_i = false;

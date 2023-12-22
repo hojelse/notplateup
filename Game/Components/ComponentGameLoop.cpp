@@ -35,8 +35,14 @@ GameState ComponentGameLoop::GetGameState() {
 }
 
 void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
-	time_between_orders = serializedData["order_interval"].GetFloat();
-	customer_patience = serializedData["customer_patience"].GetFloat();
+	initial_time_between_orders = serializedData["initial_time_between_orders"].GetFloat();
+	initial_customer_patience = serializedData["initial_customer_patience"].GetFloat();
+	initial_orders_pr_day = serializedData["initial_orders_pr_day"].GetInt();
+
+	time_between_orders = initial_time_between_orders;
+	customer_patience = initial_customer_patience;
+	orders_pr_day = initial_orders_pr_day;
+
 	std::ifstream fis("data/sprites.json");
 	rapidjson::IStreamWrapper isw(fis);
 	rapidjson::Document document;
@@ -91,6 +97,12 @@ void ResetConsumers() {
 
 void ComponentGameLoop::Update(float deltaTime) {
 	if (_game_state != PLAYING) return;
+
+	if (orders_completed_today >= orders_pr_day) {
+		SetGameState(EDIT);
+		return;
+	}
+
 	time_until_next_order -= deltaTime;
 	auto consumers = GetAvailableConsumers();
 	if (!AllConsumersHavePatience()) {
@@ -98,6 +110,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 		std::cout << "A customer lost patience, you lost" << std::endl;
 		return;
 	}
+
 	if (time_until_next_order <= 0) {
 
 		std::cout << "Consumer size: " << std::to_string(consumers.size()) << std::endl;
@@ -110,12 +123,15 @@ void ComponentGameLoop::Update(float deltaTime) {
 		auto item_id = std::rand() % items.size();
 		auto consumer_index = std::rand() % consumers.size();
 		consumers[consumer_index]->CreateOrder(items[item_id], customer_patience);
+
 		time_until_next_order = time_between_orders;
 	}
 }
 
 void ComponentGameLoop::SetGameState(GameState new_state) {
 	if (new_state == GAMEOVER) ResetGame();
+	if (new_state == EDIT) ClearDay();
+
 	std::cout << "Game state set to " << std::to_string(new_state) << std::endl;
 	_game_state = new_state;
 }
@@ -133,6 +149,13 @@ void DeleteItems() {
 }
 
 void ComponentGameLoop::ResetGame() {
+	ClearDay();
+	orders_pr_day = initial_orders_pr_day;
+	orders_completed_today = 0;
+	// TODO clear all gameobject and create level from scratch
+}
+
+void ComponentGameLoop::ClearDay() {
 	ResetConsumers();
 	DeleteItems();
 	time_until_next_order = time_between_orders;
@@ -155,4 +178,8 @@ void ComponentGameLoop::KeyEvent(SDL_Event &event) {
 			}
 			break;
 	}
+}
+
+void ComponentGameLoop::OrderCompleted() {
+	orders_completed_today++;
 }

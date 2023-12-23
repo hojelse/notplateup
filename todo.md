@@ -14,7 +14,7 @@
 - [ ] Indicate gamestates
 - [x] Decrease order interval every x days
 - [ ] Enforce only allowing orders that have emitters
-- [ ] Enforce only placing boxes within play area
+- [x] Enforce only placing boxes within play area
 - [ ] Spawn new consumers outside play area every x days
 
 - [ ] Increase number of different item emitters every x days

@@ -11,5 +11,5 @@ public:
 	void Render(sre::RenderPass &renderPass) override;
 
 private:
-	void CreateTile(std::string texture_id, int x, int y);
+	void CreateTile(std::string texture_id, int x, int y, bool is_floor);
 };

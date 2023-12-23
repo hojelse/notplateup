@@ -16,22 +16,25 @@ void ComponentFloorLayout::Init(rapidjson::Value& serializedData) {
 
 	for (int y = outdoor_padding * -1; y < dim_y + outdoor_padding; y++) {
 		for (int x = outdoor_padding * -1; x < dim_x + outdoor_padding; x++) {
-			if (x >= 0 && x < dim_x && y >= 0 && y < dim_y && serializedData["layout"][y][x].GetString() != "") {
+			if (x >= 0 && x < dim_x && y >= 0 && y < dim_y) {
 				// If inside bounds
-				auto texture_id = serializedData["layout"][y][x].GetString();
-				CreateTile(texture_id , x, y);
-			} else {
-				CreateTile(outdoor_texture_id , x, y);
+				std::string texture_id = serializedData["layout"][y][x].GetString();
+				if (!texture_id.empty()) {
+					CreateTile(texture_id , x, y, true);
+					continue;
+				}
 			}
+			CreateTile(outdoor_texture_id , x, y, false);
 		}
 	}
 }
 
-void ComponentFloorLayout::CreateTile(std::string texture_id, int x, int y) {
+void ComponentFloorLayout::CreateTile(std::string texture_id, int x, int y, bool is_floor) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto go = engine->CreateGameObject("floor-" + std::to_string(x) + "-" + std::to_string(y)).lock();
 	auto r = std::make_shared<ComponentRendererSquare>();
 	r->Init(texture_id);
+	r->is_floor = is_floor;
 	r->SetRotation(true, false, 0);
 	go->AddComponent(r);
 

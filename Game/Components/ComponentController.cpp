@@ -9,6 +9,7 @@
 #include "ComponentInteractable.h"
 #include "ComponentFollowTarget.h"
 #include "ComponentGameLoop.h"
+#include "ComponentRendererSquare.h"
 #include <cmath>
 
 void ComponentController::Init(rapidjson::Value &serializedData) {
@@ -174,6 +175,14 @@ void ComponentController::MoveTable() {
 		box->RemoveComponent(body);
 
 	} else if (!box_exists && box_held) {
+		auto ground_tile = engine->GetGameObject("floor-" + std::to_string(x) + "-" + std::to_string(y)).lock();
+		if (ground_tile) {
+			bool is_floor = ground_tile->FindComponent<ComponentRendererSquare>().lock()->is_floor;
+			if (!is_floor) {
+				std::cout << "boxes can only be placed on floor!" << std::endl;
+				return;
+			}
+		}
 		std::cout << "place box!" << std::endl;
 		auto box = engine->GetGameObject("box-held").lock();
 		box->SetPosition(

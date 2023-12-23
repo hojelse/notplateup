@@ -12,7 +12,7 @@ public:
 	int GetId() { return _id; }
 	void SetRotation(bool rotate_x, bool rotate_y, int rotation);
 	void SetScaleX(float scale);
-
+	bool is_floor = false;
 private:
 	int _id;
 	std::shared_ptr<sre::Mesh> _mesh;

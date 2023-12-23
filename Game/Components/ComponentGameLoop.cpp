@@ -202,10 +202,11 @@ void ComponentGameLoop::ClearDay() {
 void ComponentGameLoop::KeyEvent(SDL_Event &event) {
 	switch (event.key.keysym.sym) {
 		case SDLK_SPACE:
+			auto box_held = MyEngine::Engine::GetInstance()->GameObjectExists("box-held");
 			if (event.type == SDL_KEYDOWN) {
 				switch (_game_state) {
 					case EDIT:
-						SetGameState(PLAYING);
+						if (!box_held) SetGameState(PLAYING);
 						break;
 					case GAMEOVER:
 						SetGameState(EDIT);

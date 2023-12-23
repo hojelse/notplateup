@@ -49,6 +49,22 @@
 				]
 			},
 			{
+				"name": "notifier",
+				"transform": {
+					"position": [0, 0, 0],
+					"rotation": [0, 0, 0],
+					"scale": [1, 1, 1]
+				},
+				"components": [
+					{
+						"typeId": "NOTIFIER",
+						"serializedData": {
+							"total_duration": 3
+						}
+					}
+				]
+			},
+			{
 				"name": "player",
 				"transform": {
 					"position": [0, 0, 0],

@@ -10,6 +10,7 @@
 #include "ComponentFollowTarget.h"
 #include "ComponentGameLoop.h"
 #include "ComponentRendererSquare.h"
+#include "ComponentNotifier.h"
 #include <cmath>
 
 void ComponentController::Init(rapidjson::Value &serializedData) {
@@ -155,7 +156,7 @@ void ComponentController::MoveTable() {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto box_exists = engine->GameObjectExists(box_id);
 	auto box_held = engine->GameObjectExists("box-held");
-
+	auto notifier = engine->GetGameObject("notifier").lock()->FindComponent<ComponentNotifier>().lock();
 	if (box_exists && !box_held) {
 		std::cout << "pickup box!" << std::endl;
 		auto box = engine->GetGameObject(box_id).lock();
@@ -179,6 +180,7 @@ void ComponentController::MoveTable() {
 		if (ground_tile) {
 			bool is_floor = ground_tile->FindComponent<ComponentRendererSquare>().lock()->is_floor;
 			if (!is_floor) {
+				notifier->SetMessage("Boxes can only be placed on floor");
 				std::cout << "boxes can only be placed on floor!" << std::endl;
 				return;
 			}

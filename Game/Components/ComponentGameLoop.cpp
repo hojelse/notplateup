@@ -81,6 +81,22 @@ bool AllConsumersHavePatience() {
 	return true;
 }
 
+void DeleteSpawnedConsumers() {
+	auto engine = MyEngine::Engine::GetInstance();
+	for (const auto& pair : engine->GetGameObjects()) {
+		const std::string& key = pair.first;
+		auto value = pair.second;
+
+		if (key.find("box") != std::string::npos) {
+			auto consumer = value->FindComponent<ComponentConsumer>().lock();
+			if (consumer && !consumer->is_part_of_layout) {
+				engine->DeleteGameObject(value->GetName());
+				consumer->indicator = nullptr;
+			}
+		}
+	}
+}
+
 void ResetConsumers() {
 	auto engine = MyEngine::Engine::GetInstance();
 	for (const auto& pair : engine->GetGameObjects()) {
@@ -159,6 +175,7 @@ void DeleteItems() {
 
 void ComponentGameLoop::ResetGame() {
 	ClearDay();
+	DeleteSpawnedConsumers();
 	time_between_orders = initial_time_between_orders;
 	customer_patience = initial_customer_patience;
 	orders_pr_day = initial_orders_pr_day;
@@ -178,8 +195,7 @@ void ComponentGameLoop::ClearDay() {
 	customer_patience = initial_customer_patience * std::pow(patience_decrease_pr_day, day);
 	if (day > 0 && day % table_spawn_day_interval == 0) {
 		auto level_layout = MyEngine::Engine::GetInstance()->GetGameObject("layout").lock()->FindComponent<ComponentLevelLayout>().lock();
-		level_layout->CreateBox("consumer", 0, -1);
-
+		level_layout->CreateBox("consumer", 0, -1, false);
 	}
 }
 

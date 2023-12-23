@@ -26,7 +26,7 @@ void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	}
 }
 
-void ComponentLevelLayout::CreateBox(std::string texture_id, int x, int y) {
+void ComponentLevelLayout::CreateBox(std::string texture_id, int x, int y, bool is_part_of_layout) {
 	auto engine = MyEngine::Engine::GetInstance();
 	auto name = "box-" + std::to_string(x) + "-" + std::to_string(y);
 	auto go = engine->CreateGameObject(name).lock();
@@ -38,6 +38,7 @@ void ComponentLevelLayout::CreateBox(std::string texture_id, int x, int y) {
 	} else if (texture_id.find("consumer") != std::string::npos) {
 		auto consumer = std::make_shared<ComponentConsumer>();
 		consumer->Init(texture_id);
+		consumer->is_part_of_layout = is_part_of_layout;
 		go->AddComponent(consumer);
 	} else if (texture_id.find("box") != std::string::npos) {
 		auto table = std::make_shared<ComponentTable>();

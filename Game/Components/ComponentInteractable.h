@@ -19,6 +19,7 @@ public:
 		return _id;
 	}
 
+	bool is_part_of_layout = true;
 protected:
 	std::string _id;
 };

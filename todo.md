@@ -11,7 +11,7 @@
 - [x] Make consumer indicate which item
 - [x] Make consumer indicate patience
 - [x] Make colliders move with gameobject
-- [ ] Indicate gamestates
+- [x] Indicate gamestates
 - [x] Decrease order interval every x days
 - [ ] Enforce only allowing orders that have emitters
 - [x] Enforce only placing boxes within play area

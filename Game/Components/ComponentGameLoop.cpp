@@ -100,6 +100,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 	if (_game_state != PLAYING) return;
 
 	if (orders_completed_today >= orders_pr_day) {
+		day++;
 		SetGameState(EDIT);
 		return;
 	}
@@ -108,6 +109,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 	auto consumers = GetAvailableConsumers();
 	if (!AllConsumersHavePatience()) {
 		SetGameState(GAMEOVER);
+		_death_reason = "A customer lost patience";
 		std::cout << "A customer lost patience, you lost" << std::endl;
 		return;
 	}
@@ -117,6 +119,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 		std::cout << "Consumer size: " << std::to_string(consumers.size()) << std::endl;
 		if (consumers.size() == 0) {
 			SetGameState(GAMEOVER);
+			_death_reason = "No available table";
 			std::cout << "No available tables, you lost" << std::endl;
 			return;
 		}
@@ -156,6 +159,7 @@ void ComponentGameLoop::ResetGame() {
 	customer_patience = initial_customer_patience;
 	orders_pr_day = initial_orders_pr_day;
 	day = 0;
+	_death_reason = "";
 	// TODO clear all gameobject and create level from scratch
 }
 
@@ -163,7 +167,6 @@ void ComponentGameLoop::ClearDay() {
 	ResetConsumers();
 	DeleteItems();
 	time_until_next_order = time_between_orders;
-	day++;
 	orders_placed_today = 0;
 	orders_completed_today = 0;
 	time_between_orders = initial_time_between_orders * std::pow(order_speedup_pr_day, day);
@@ -186,6 +189,50 @@ void ComponentGameLoop::KeyEvent(SDL_Event &event) {
 			}
 			break;
 	}
+}
+
+void ComponentGameLoop::Render(sre::RenderPass &) {
+	ImGui::SetNextWindowPos(ImVec2(.0f, .0f), ImGuiSetCond_Always);
+	if (day == 0 && _game_state == EDIT) {
+		ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiSetCond_Always);
+	} else {
+		ImGui::SetNextWindowSize(ImVec2(300, 75), ImGuiSetCond_Always);
+	}
+	ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+
+	if (day == 0 && _game_state == EDIT) {
+		ImGui::Text("%s", "Welcome To !PlateUp");
+		ImGui::TextWrapped("%s", "Your task as chef is to serve your customers what they order, before they run out of patience.");
+		ImGui::TextWrapped("%s", "Also make sure that there is always a table available for the next customer, otherwise you will lose.");
+		ImGui::TextWrapped("%s", "Before each day begins, you can arrange your restaurant as you desire. Each day will be a little harder than the one before.");
+		ImGui::TextWrapped("%s", "");
+		ImGui::TextWrapped("%s", "Controls:");
+		ImGui::TextWrapped("%s", "Movement: W A S D");
+		ImGui::TextWrapped("%s", "Interact: O");
+		ImGui::TextWrapped("%s", "Dash: K");
+		ImGui::TextWrapped("%s", "Look without walking: LSHIFT");
+		ImGui::TextWrapped("%s", "");
+	}
+
+	std::string state_text = "";
+	std::string action_text = "";
+	switch (_game_state) {
+		case EDIT:
+			state_text = "Prepare your restaurant";
+			action_text = "Press SPACE to start the next day";
+			break;
+		case PLAYING:
+			state_text = "Serve your customers";
+			break;
+		case GAMEOVER:
+			state_text = "You lost. " + _death_reason;
+			action_text = "Press SPACE to start over";
+			break;
+	}
+	ImGui::Text("Day %i", day);
+	ImGui::Text("%s", state_text.c_str());
+	ImGui::Text("%s", action_text.c_str());
+	ImGui::End();
 }
 
 void ComponentGameLoop::OrderCompleted() {

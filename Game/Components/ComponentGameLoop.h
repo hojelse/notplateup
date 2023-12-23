@@ -8,6 +8,7 @@ class ComponentGameLoop : public MyEngine::Component {
 	void Init(rapidjson::Value&) override;
 	void Update(float deltaTime) override;
 	void KeyEvent(SDL_Event&) override;
+	void Render(sre::RenderPass&) override;
 
 public:
 	void SetGameState(GameState new_state);
@@ -38,4 +39,5 @@ private:
 	std::vector<int> _item_states;
 	std::vector<float> _start;
 	std::vector<int> _item_id;
+	std::string _death_reason = "";
 };

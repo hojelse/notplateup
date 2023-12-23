@@ -39,6 +39,7 @@ void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 	initial_customer_patience = serializedData["initial_customer_patience"].GetFloat();
 	initial_orders_pr_day = serializedData["initial_orders_pr_day"].GetInt();
 	order_speedup_pr_day = serializedData["order_speedup_pr_day"].GetFloat();
+	increment_order_count_day_interval = serializedData["increment_order_count_day_interval"].GetInt();
 
 	time_between_orders = initial_time_between_orders;
 	customer_patience = initial_customer_patience;
@@ -170,6 +171,7 @@ void ComponentGameLoop::ClearDay() {
 	orders_placed_today = 0;
 	orders_completed_today = 0;
 	time_between_orders = initial_time_between_orders * std::pow(order_speedup_pr_day, day);
+	orders_pr_day = initial_orders_pr_day + std::floor(day/increment_order_count_day_interval);
 }
 
 void ComponentGameLoop::KeyEvent(SDL_Event &event) {
@@ -223,6 +225,7 @@ void ComponentGameLoop::Render(sre::RenderPass &) {
 			break;
 		case PLAYING:
 			state_text = "Serve your customers";
+			action_text = std::to_string(orders_completed_today) + " out of " + std::to_string(orders_pr_day) + " orders completed";
 			break;
 		case GAMEOVER:
 			state_text = "You lost. " + _death_reason;

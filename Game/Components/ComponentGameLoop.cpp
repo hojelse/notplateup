@@ -7,6 +7,7 @@
 #include "ComponentConsumer.h"
 #include "rapidjson/istreamwrapper.h"
 #include "ComponentLevelLayout.h"
+#include "ComponentNotifier.h"
 #include <ctime>
 
 std::vector<std::shared_ptr<ComponentConsumer>> GetAvailableConsumers() {
@@ -216,13 +217,17 @@ void ComponentGameLoop::ClearDay() {
 }
 
 void ComponentGameLoop::KeyEvent(SDL_Event &event) {
+	auto notifier = MyEngine::Engine::GetInstance()->GetGameObject("notifier").lock()->FindComponent<ComponentNotifier>().lock();;
 	switch (event.key.keysym.sym) {
 		case SDLK_SPACE:
 			auto box_held = MyEngine::Engine::GetInstance()->GameObjectExists("box-held");
 			if (event.type == SDL_KEYDOWN) {
 				switch (_game_state) {
 					case EDIT:
-						if (!box_held && !ConsumerAtSpawnLocation()) SetGameState(PLAYING);
+						if (!box_held && !ConsumerAtSpawnLocation()) {
+							SetGameState(PLAYING);
+						} else if (box_held) notifier->SetMessage("Put down the box before starting");
+						else if (ConsumerAtSpawnLocation()) notifier->SetMessage("Move boxes from outside to inside");
 						break;
 					case GAMEOVER:
 						SetGameState(EDIT);

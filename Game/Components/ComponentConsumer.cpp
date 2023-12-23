@@ -7,6 +7,7 @@
 #include "Engine/Components/ComponentRendererSprite.h"
 #include "ComponentRendererSquare.h"
 #include "ComponentGameLoop.h"
+#include "ComponentNotifier.h"
 
 void ComponentConsumer::Update(float delta) {
 	if (is_ordering) patience_left -= delta;
@@ -35,10 +36,12 @@ void ComponentConsumer::CreateOrder(std::string item_id, float patience) {
 void ComponentConsumer::Interact() {
 	auto heldVal = "itm-held";
 	auto engine = MyEngine::Engine::GetInstance();
+	auto notifier = engine->GetGameObject("notifier").lock()->FindComponent<ComponentNotifier>().lock();
 	auto isHeld = engine->GameObjectExists(heldVal);
 
 	if (!is_ordering) {
 		std::cout << "This table is not awaiting food" << std::endl;
+		notifier->SetMessage("This table is not awaiting food");
 		return;
 	}
 
@@ -59,6 +62,7 @@ void ComponentConsumer::Interact() {
 
 			is_ordering = false;
 		} else {
+			notifier->SetMessage("That customer did not order that food");
 			std::cout << "consumer and item are different types" << std::endl;
 		}
 	}

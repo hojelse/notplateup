@@ -12,7 +12,7 @@
 - [x] Make consumer indicate patience
 - [x] Make colliders move with gameobject
 - [ ] Indicate gamestates
-- [ ] Decrease order interval every x days
+- [x] Decrease order interval every x days
 - [ ] Enforce only allowing orders that have emitters
 - [ ] Enforce only placing boxes within play area
 - [ ] Spawn new consumers outside play area every x days

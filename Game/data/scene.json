@@ -48,7 +48,7 @@
 			{
 				"name": "player",
 				"transform": {
-					"position": [5, 0, 0],
+					"position": [0, 0, 0],
 					"rotation": [0, 0, 0],
 					"scale": [1, 1, 1]
 				},
@@ -59,18 +59,17 @@
 							"bodyType": 2,
 							"isSensor": false,
 							"size": [1, 1]
-						} 
+						}
 					},
 					{
 						"typeId": "CONTROLLER",
 						"serializedData": {
-							"movSpeed": 10,
-							"rotSpeed": 2.5
+							"movSpeed": 10
 						}
 					},
 					{
 						"typeId": "PLAYER_RENDERER",
-						"serializedData": 16
+						"serializedData": {}
 					}
 				],
 				"children": []

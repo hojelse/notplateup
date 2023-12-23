@@ -13,7 +13,6 @@
 
 void ComponentController::Init(rapidjson::Value &serializedData) {
 	mov_speed = serializedData["movSpeed"].GetFloat();
-	rot_speed = serializedData["rotSpeed"].GetFloat();
 	auto engine = MyEngine::Engine::GetInstance();
 	auto game_loop = engine->GetGameObject("game_loop").lock()->FindComponent<ComponentGameLoop>().lock();
 	_game_loop = game_loop;

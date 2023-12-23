@@ -30,6 +30,7 @@ private:
 	int orders_completed_today = 0;
 	int orders_placed_today = 0;
 	int day = 0;
+	int table_spawn_day_interval;
 	int increment_order_count_day_interval;
 	std::vector<std::string> items;
 	bool queue = false;

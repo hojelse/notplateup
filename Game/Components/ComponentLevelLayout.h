@@ -10,7 +10,7 @@ public:
 
 	void Render(sre::RenderPass &renderPass) override;
 
-private:
 	void CreateBox(std::string texture_id, int x, int y);
+private:
 	void CreateConsumerIndicator(int id, int x, int y);
 };

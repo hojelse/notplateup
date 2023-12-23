@@ -6,6 +6,7 @@
 #include "ComponentFollowTarget.h"
 #include "ComponentConsumer.h"
 #include "rapidjson/istreamwrapper.h"
+#include "ComponentLevelLayout.h"
 #include <ctime>
 
 std::vector<std::shared_ptr<ComponentConsumer>> GetAvailableConsumers() {
@@ -41,6 +42,7 @@ void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 	order_speedup_pr_day = serializedData["order_speedup_pr_day"].GetFloat();
 	increment_order_count_day_interval = serializedData["increment_order_count_day_interval"].GetInt();
 	patience_decrease_pr_day = serializedData["patience_decrease_pr_day"].GetFloat();
+	table_spawn_day_interval = serializedData["table_spawn_day_interval"].GetInt();
 
 	time_between_orders = initial_time_between_orders;
 	customer_patience = initial_customer_patience;
@@ -174,6 +176,11 @@ void ComponentGameLoop::ClearDay() {
 	time_between_orders = initial_time_between_orders * std::pow(order_speedup_pr_day, day);
 	orders_pr_day = initial_orders_pr_day + std::floor(day/increment_order_count_day_interval);
 	customer_patience = initial_customer_patience * std::pow(patience_decrease_pr_day, day);
+	if (day > 0 && day % table_spawn_day_interval == 0) {
+		auto level_layout = MyEngine::Engine::GetInstance()->GetGameObject("layout").lock()->FindComponent<ComponentLevelLayout>().lock();
+		level_layout->CreateBox("consumer", 0, -1);
+
+	}
 }
 
 void ComponentGameLoop::KeyEvent(SDL_Event &event) {

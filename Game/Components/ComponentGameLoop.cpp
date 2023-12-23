@@ -97,6 +97,22 @@ void DeleteSpawnedConsumers() {
 	}
 }
 
+bool ConsumerAtSpawnLocation() {
+	auto engine = MyEngine::Engine::GetInstance();
+	for (const auto& pair : engine->GetGameObjects()) {
+		const std::string& key = pair.first;
+		auto value = pair.second;
+
+		if (key.find("box") != std::string::npos) {
+			auto consumer = value->FindComponent<ComponentConsumer>().lock();
+			if (consumer) {
+				if (consumer->GetGameObject().lock()->GetName() == "box-0--1") return true;
+			}
+		}
+	}
+	return false;
+}
+
 void ResetConsumers() {
 	auto engine = MyEngine::Engine::GetInstance();
 	for (const auto& pair : engine->GetGameObjects()) {
@@ -206,7 +222,7 @@ void ComponentGameLoop::KeyEvent(SDL_Event &event) {
 			if (event.type == SDL_KEYDOWN) {
 				switch (_game_state) {
 					case EDIT:
-						if (!box_held) SetGameState(PLAYING);
+						if (!box_held && !ConsumerAtSpawnLocation()) SetGameState(PLAYING);
 						break;
 					case GAMEOVER:
 						SetGameState(EDIT);

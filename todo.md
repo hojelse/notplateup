@@ -18,5 +18,5 @@
 - [ ] Spawn new consumers outside play area every x days
 
 - [ ] Increase number of different item emitters every x days
-- [ ] Decrease patience every x days
+- [x] Decrease patience every x days
 **

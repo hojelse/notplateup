@@ -41,6 +41,7 @@
 							"initial_customer_patience": 10,
 							"initial_orders_pr_day": 3,
 							"order_speedup_pr_day": 0.9,
+							"patience_decrease_pr_day": 0.95,
 							"increment_order_count_day_interval": 2
 						}
 					}

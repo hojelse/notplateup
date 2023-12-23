@@ -22,6 +22,7 @@ private:
 	float initial_time_between_orders;
 	float time_between_orders;
 	float initial_customer_patience;
+	float patience_decrease_pr_day;
 	float customer_patience;
 	float order_speedup_pr_day;
 	int initial_orders_pr_day;

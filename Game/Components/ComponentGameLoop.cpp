@@ -40,6 +40,7 @@ void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 	initial_orders_pr_day = serializedData["initial_orders_pr_day"].GetInt();
 	order_speedup_pr_day = serializedData["order_speedup_pr_day"].GetFloat();
 	increment_order_count_day_interval = serializedData["increment_order_count_day_interval"].GetInt();
+	patience_decrease_pr_day = serializedData["patience_decrease_pr_day"].GetFloat();
 
 	time_between_orders = initial_time_between_orders;
 	customer_patience = initial_customer_patience;
@@ -172,6 +173,7 @@ void ComponentGameLoop::ClearDay() {
 	orders_completed_today = 0;
 	time_between_orders = initial_time_between_orders * std::pow(order_speedup_pr_day, day);
 	orders_pr_day = initial_orders_pr_day + std::floor(day/increment_order_count_day_interval);
+	customer_patience = initial_customer_patience * std::pow(patience_decrease_pr_day, day);
 }
 
 void ComponentGameLoop::KeyEvent(SDL_Event &event) {

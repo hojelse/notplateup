@@ -12,19 +12,21 @@ class ComponentGameLoop : public MyEngine::Component {
 public:
 	void SetGameState(GameState new_state);
 	GameState GetGameState();
-	void ResetGame();
-	void ClearDay();
 	void OrderCompleted();
 
 private:
+	void ResetGame();
+	void ClearDay();
 	float time_until_next_order = 5;
 	float initial_time_between_orders;
 	float time_between_orders;
 	float initial_customer_patience;
 	float customer_patience;
+	float order_speedup_pr_day;
 	int initial_orders_pr_day;
 	int orders_pr_day;
 	int orders_completed_today = 0;
+	int orders_placed_today = 0;
 	int day = 0;
 	std::vector<std::string> items;
 	bool queue = false;

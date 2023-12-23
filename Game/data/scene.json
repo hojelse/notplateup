@@ -39,7 +39,8 @@
 						"serializedData": {
 							"initial_time_between_orders": 10,
 							"initial_customer_patience": 10,
-							"initial_orders_pr_day": 3
+							"initial_orders_pr_day": 3,
+							"order_speedup_pr_day": 0.9
 						}
 					}
 				]

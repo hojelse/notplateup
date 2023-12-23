@@ -38,6 +38,7 @@ void ComponentGameLoop::Init(rapidjson::Value &serializedData) {
 	initial_time_between_orders = serializedData["initial_time_between_orders"].GetFloat();
 	initial_customer_patience = serializedData["initial_customer_patience"].GetFloat();
 	initial_orders_pr_day = serializedData["initial_orders_pr_day"].GetInt();
+	order_speedup_pr_day = serializedData["order_speedup_pr_day"].GetFloat();
 
 	time_between_orders = initial_time_between_orders;
 	customer_patience = initial_customer_patience;
@@ -100,7 +101,6 @@ void ComponentGameLoop::Update(float deltaTime) {
 
 	if (orders_completed_today >= orders_pr_day) {
 		SetGameState(EDIT);
-		day++;
 		return;
 	}
 
@@ -112,7 +112,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 		return;
 	}
 
-	if (time_until_next_order <= 0) {
+	if (time_until_next_order <= 0 && orders_placed_today < orders_pr_day) {
 
 		std::cout << "Consumer size: " << std::to_string(consumers.size()) << std::endl;
 		if (consumers.size() == 0) {
@@ -123,6 +123,7 @@ void ComponentGameLoop::Update(float deltaTime) {
 		std::srand(std::time(nullptr));
 		auto item_id = std::rand() % items.size();
 		auto consumer_index = std::rand() % consumers.size();
+		orders_placed_today++;
 		consumers[consumer_index]->CreateOrder(items[item_id], customer_patience);
 
 		time_until_next_order = time_between_orders;
@@ -154,7 +155,6 @@ void ComponentGameLoop::ResetGame() {
 	time_between_orders = initial_time_between_orders;
 	customer_patience = initial_customer_patience;
 	orders_pr_day = initial_orders_pr_day;
-	orders_completed_today = 0;
 	day = 0;
 	// TODO clear all gameobject and create level from scratch
 }
@@ -163,6 +163,10 @@ void ComponentGameLoop::ClearDay() {
 	ResetConsumers();
 	DeleteItems();
 	time_until_next_order = time_between_orders;
+	day++;
+	orders_placed_today = 0;
+	orders_completed_today = 0;
+	time_between_orders = initial_time_between_orders * std::pow(order_speedup_pr_day, day);
 }
 
 void ComponentGameLoop::KeyEvent(SDL_Event &event) {

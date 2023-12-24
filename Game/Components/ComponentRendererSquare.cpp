@@ -1,22 +1,14 @@
-//
-// Created by tjoms on 12/19/23.
-//
-
 #include "ComponentRendererSquare.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
 #include <glm/gtx/matrix_decompose.hpp>
-#include <unistd.h>
 #include <cmath>
 #include "Engine/ResourceManager.h"
 
 #include <fstream>
 #include "3rdParty/rapidjson/document.h"
 #include "3rdParty/rapidjson/istreamwrapper.h"
-#include "3rdParty/rapidjson/stringbuffer.h"
-#include "3rdParty/rapidjson/writer.h"
-
 
 void ComponentRendererSquare::Init(rapidjson::Value &serializedData) {
 	const std::string texture_id = serializedData.GetString();
@@ -128,10 +120,6 @@ void ComponentRendererSquare::Init(std::string texture_name) {
 			.build();
 
 	_material->setTexture(_texture);
-}
-
-void ComponentRendererSquare::Update(float deltaTime) {
-
 }
 
 void ComponentRendererSquare::SetRotation(bool rotate_x, bool rotate_y, int rotation) {

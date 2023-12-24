@@ -4,7 +4,6 @@
 #include "glm/gtx/transform.hpp"
 #include "ComponentItem.h"
 #include "Engine/MyEngine.h"
-#include "Engine/Components/ComponentRendererSprite.h"
 #include "ComponentRendererSquare.h"
 #include "ComponentGameLoop.h"
 #include "ComponentNotifier.h"
@@ -82,8 +81,6 @@ void ComponentConsumer::CreateConsumerIndicator(std::string id, int x, int y) {
 	auto pos = glm::vec3(x, y, 2);
 	auto rot = glm::vec3(0, 0, 0);
 	auto scl = glm::vec3(0.5, 0.5, 0.5);
-
-//	glm::vec3 loading_scale = {patience_left / total_patience, 1, 1};
 
 	indicator_go->transform =
 		glm::translate(pos) *

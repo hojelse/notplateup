@@ -47,11 +47,3 @@ void ComponentFloorLayout::CreateTile(std::string texture_id, int x, int y, bool
 			glm::mat4_cast(glm::quat(glm::radians(rot))) *
 			glm::scale(scl);
 }
-
-void ComponentFloorLayout::Update(float deltaTime) {
-
-}
-
-void ComponentFloorLayout::Render(sre::RenderPass& renderPass) {
-
-}

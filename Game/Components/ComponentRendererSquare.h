@@ -7,7 +7,6 @@ public:
 	void Init(rapidjson::Value& serializedData) override;
 	void Init(int texture_id);
 	void Init(std::string texture_id);
-	void Update(float deltaTime) override;
 	void Render(sre::RenderPass& renderPass) override;
 	int GetId() { return _id; }
 	void SetRotation(bool rotate_x, bool rotate_y, int rotation);

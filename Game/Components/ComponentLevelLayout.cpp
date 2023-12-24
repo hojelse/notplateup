@@ -10,8 +10,6 @@
 #include "ComponentConsumer.h"
 #include "ComponentTable.h"
 #include "ComponentRendererSquare.h"
-#include "ComponentFollowTarget.h"
-#include "Engine/Components/ComponentRendererSprite.h"
 
 void ComponentLevelLayout::Init(rapidjson::Value& serializedData) {
 	auto dimy = serializedData["layout"].Size();
@@ -81,12 +79,4 @@ void ComponentLevelLayout::CreateBox(std::string texture_id, int x, int y, bool 
 	auto isSensor = false;
 	glm::vec2 size { 0.5, 0.5 };
 	body->CreateBody(bodyType, isSensor, size);
-}
-
-void ComponentLevelLayout::Update(float deltaTime) {
-
-}
-
-void ComponentLevelLayout::Render(sre::RenderPass& renderPass) {
-
 }

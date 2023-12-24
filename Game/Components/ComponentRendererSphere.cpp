@@ -1,11 +1,8 @@
 #include "ComponentRendererSphere.h"
 
-#include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
 #include "ComponentController.h"
 #include <glm/gtx/matrix_decompose.hpp>
-#include <unistd.h>
-#include <cmath>
 
 void ComponentRendererSphere::Init(rapidjson::Value &serializedData)
 {
@@ -21,10 +18,6 @@ void ComponentRendererSphere::Init(rapidjson::Value &serializedData)
 		.build();
 
 	_material->setTexture(_texture);
-}
-
-void ComponentRendererSphere::Update(float deltaTime)
-{
 }
 
 void ComponentRendererSphere::Render(sre::RenderPass &renderPass)

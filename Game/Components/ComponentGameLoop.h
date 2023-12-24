@@ -33,11 +33,7 @@ private:
 	int table_spawn_day_interval;
 	int increment_order_count_day_interval;
 	std::vector<std::string> items;
-	bool queue = false;
-	bool key_down_i = false;
-	float _patience = 10;
 	GameState _game_state = EDIT;
-	float _elapsed;
 	int _n;
 	std::vector<int> _item_states;
 	std::vector<float> _start;

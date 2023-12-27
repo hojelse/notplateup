@@ -111,7 +111,6 @@ void ComponentController::MoveTable() {
 	auto go = GetGameObject().lock();
 	auto pos = go->GetPosition();
 	auto rotation = go->GetRotation();
-	glm::vec3 euler = glm::eulerAngles(rotation);
 
 	int x = std::floor(pos.x + direction_vector.x + 0.5f);
 	int y = std::floor(pos.y + direction_vector.y + 0.5f);
@@ -177,7 +176,6 @@ void ComponentController::Interact() {
 	auto go = GetGameObject().lock();
 	auto pos = go->GetPosition();
 	auto rotation = go->GetRotation();
-	glm::vec3 euler = glm::eulerAngles(rotation);
 
 	int x = std::floor(pos.x + direction_vector.x + 0.5f);
 	int y = std::floor(pos.y + direction_vector.y + 0.5f);

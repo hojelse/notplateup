@@ -3,7 +3,6 @@
 #include <fstream>
 #include "Engine/MyEngine.h"
 #include "SDL.h"
-#include "ComponentFollowTarget.h"
 #include "ComponentConsumer.h"
 #include "rapidjson/istreamwrapper.h"
 #include "ComponentLevelLayout.h"
@@ -206,7 +205,6 @@ void ComponentGameLoop::ClearDay() {
 	DeleteItems();
 	time_until_next_order = time_between_orders;
 	orders_placed_today = 0;
-	orders_completed_today = 0;
 	time_between_orders = initial_time_between_orders * std::pow(order_speedup_pr_day, day);
 	orders_pr_day = initial_orders_pr_day + std::floor(day/increment_order_count_day_interval);
 	customer_patience = initial_customer_patience * std::pow(patience_decrease_pr_day, day);

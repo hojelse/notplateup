@@ -24,6 +24,7 @@ public:
 	void setLinearVelocity(glm::vec2 velocity);
 	void setPosition(glm::vec2 pos);
 	glm::vec2 getLinearVelocity();
+	void setCircleShape(bool is_sensor);
 
 private:
 	b2World* _world;

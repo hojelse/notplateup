@@ -20,6 +20,7 @@ void ComponentController::Init(rapidjson::Value &serializedData) {
 	auto go = GetGameObject().lock();
 	if (!go) return;
 	_body = go->FindComponent<ComponentPhysicsBody>();
+	_body.lock()->setCircleShape(false);
 }
 
 void ComponentController::Update(float deltaTime) {

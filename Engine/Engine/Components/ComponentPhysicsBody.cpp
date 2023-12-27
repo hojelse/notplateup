@@ -36,6 +36,15 @@ void ComponentPhysicsBody::Init(rapidjson::Value& serializedData) {
 	CreateBody(static_cast<b2BodyType>(bodyType), isSensor, size);
 }
 
+void ComponentPhysicsBody::setCircleShape(bool is_sensor) {
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = _shape_circle;
+	fixtureDef.isSensor = is_sensor;
+
+	_body->DestroyFixture(_fixture);
+	_fixture = _body->CreateFixture(&fixtureDef);
+}
+
 void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::vec2 size) {
 	auto go = GetGameObject().lock();
 	glm::vec2 pos = go->GetPosition();
@@ -72,12 +81,8 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 	{
 		b2FixtureDef fixtureDef;
 
-		
-		if (go->GetName() == "player") {
-			fixtureDef.shape = _shape_circle;
-		} else {
-			fixtureDef.shape = _shape;
-		}
+		fixtureDef.shape = _shape;
+
 		fixtureDef.isSensor = isSensor;
 
 		_fixture = _body->CreateFixture(&fixtureDef);

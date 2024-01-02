@@ -6,6 +6,8 @@ This is NOT PlateUp!
 
 Kristoffer (KRBH) and Thomas (THHK)
 
+The report is `report.pdf`
+
 ## How to run
 
 Drag and drop the folder `notplateup` into the SimpleRenderEngine folder, just like in the exercises.

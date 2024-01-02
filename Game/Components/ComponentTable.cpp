@@ -13,10 +13,7 @@ void ComponentTable::Interact() {
 	auto item_on_box_id = "itm-" + std::to_string(table_pos.x) + "-" + std::to_string(table_pos.y);
 	auto has_item_on_box = engine->GameObjectExists(item_on_box_id);
 
-	std::cout << "table?" << std::endl;
-
 	if (is_holding_item && !has_item_on_box) {
-		std::cout << "place item!" << std::endl;
 
 		auto held_item = engine->GetGameObject("itm-held").lock();
 		held_item->SetPosition(table_pos + glm::vec3(0,0,1));
@@ -27,7 +24,6 @@ void ComponentTable::Interact() {
 		held_item->RemoveComponent(f);
 
 	} else if (!is_holding_item && has_item_on_box) {
-		std::cout << "pickup item!" << std::endl;
 
 		auto item_on_box = engine->GetGameObject(item_on_box_id).lock();
 

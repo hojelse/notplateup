@@ -123,7 +123,6 @@ void ComponentController::MoveTable() {
 	auto box_held = engine->GameObjectExists("box-held");
 	auto notifier = engine->GetGameObject("notifier").lock()->FindComponent<ComponentNotifier>().lock();
 	if (box_exists && !box_held) {
-		std::cout << "pickup box!" << std::endl;
 		auto box = engine->GetGameObject(box_id).lock();
 		box->SetPosition({-1, -1, 0});
 		engine->RenameGameObject(box_id, "box-held");
@@ -150,7 +149,6 @@ void ComponentController::MoveTable() {
 				return;
 			}
 		}
-		std::cout << "place box!" << std::endl;
 		auto box = engine->GetGameObject("box-held").lock();
 		box->SetPosition(
 			glm::vec3(x, y, 0)
@@ -168,8 +166,6 @@ void ComponentController::MoveTable() {
 		glm::vec2 size { 0.5, 0.5 };
 		body->CreateBody(bodyType, isSensor, size);
 		box->AddComponent(body);
-	} else {
-		std::cout << "idk bruv " << std::endl;
 	}
 }
 

@@ -152,7 +152,6 @@ void ComponentGameLoop::Update(float deltaTime) {
 
 	if (time_until_next_order <= 0 && orders_placed_today < orders_pr_day) {
 
-		std::cout << "Consumer size: " << std::to_string(consumers.size()) << std::endl;
 		if (consumers.empty()) {
 			SetGameState(GAMEOVER);
 			_death_reason = "No available table";

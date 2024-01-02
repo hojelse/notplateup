@@ -56,7 +56,6 @@ void ComponentConsumer::Interact() {
 			indicator = nullptr;
 			auto pos = GetGameObject().lock()->GetPosition();
 			auto indicator_name = "indicator-" + std::to_string((int)pos.x) + "-" + std::to_string((int)pos.y);
-			std::cout << "delete? " << indicator_name << std::endl;
 			engine->DeleteGameObject(indicator_name);
 
 			is_ordering = false;

@@ -15,7 +15,6 @@ void ComponentEmitter::Interact() {
 
 		auto r = std::make_shared<ComponentRendererSprite>();
 
-		std::cout << "should start with box-: " << _id << std::endl;
 		r->SetSprite("sprites", "item-" + GeneralId() + ".png");
 
 		r->GetSprite()->setScale({0.05, 0.05});
@@ -40,7 +39,5 @@ void ComponentEmitter::Interact() {
 			glm::translate(pos) *
 			glm::mat4_cast(glm::quat(glm::radians(rot))) *
 			glm::scale(scl);
-	} else {
-		std::cout << "holding stuff" << std::endl;
 	}
 }
